@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedPage from '@/components/AnimatedPage';
@@ -20,7 +19,7 @@ import ChildTasks from '@/components/dashboard/ChildTasks';
 import ActivitySummary from '@/components/dashboard/ActivitySummary';
 import QuickActions from '@/components/dashboard/QuickActions';
 import ChildForm from '@/components/dashboard/ChildForm';
-import TaskForm from '@/components/dashboard/TaskForm';
+import TaskForm from '@/components/dashboard/taskForm';
 
 const ParentDashboard = () => {
   // For demo purposes, we're using parent with ID 3
