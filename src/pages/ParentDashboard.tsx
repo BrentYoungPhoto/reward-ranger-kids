@@ -138,6 +138,8 @@ const ParentDashboard = () => {
         dueDate: taskData.dueDate || new Date().toISOString().split('T')[0],
         icon: taskData.icon as keyof typeof import('@/utils/dummyData').icons || 'star',
         reward: taskData.reward,
+        recurrence: taskData.recurrence,
+        imageURL: taskData.imageURL,
       };
       
       setChildTasks(prev => [...prev, newTask]);
@@ -181,6 +183,7 @@ const ParentDashboard = () => {
                 selectedChild={selectedChild}
                 onAddTask={handleAddTask}
                 onAddReward={() => toast.info("Add reward functionality coming soon!")}
+                onEditTask={handleEditTask}
               />
             </div>
             

@@ -1,92 +1,67 @@
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 import { Task } from '@/utils/dummyData';
 import TaskCard from './TaskCard';
-import { Button } from '@/components/ui/button';
-import { CheckSquare, Square } from 'lucide-react';
 
 interface TaskListProps {
   tasks: Task[];
   title?: string;
-  showCompleted?: boolean;
+  onComplete?: (id: string) => void;
+  onEditTask?: (task: Task) => void;
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, title = "Tasks", showCompleted = true }) => {
-  const [showCompletedTasks, setShowCompletedTasks] = useState(showCompleted);
-  const [completedTaskIds, setCompletedTaskIds] = useState<string[]>(
-    tasks.filter(task => task.completed).map(task => task.id)
-  );
+const TaskList: React.FC<TaskListProps> = ({ 
+  tasks, 
+  title = 'Tasks', 
+  onComplete,
+  onEditTask
+}) => {
+  if (tasks.length === 0) {
+    return (
+      <div className="text-center p-8">
+        <p className="text-muted-foreground">No tasks yet.</p>
+      </div>
+    );
+  }
 
-  const handleCompleteTask = (id: string) => {
-    setCompletedTaskIds(prev => [...prev, id]);
-  };
-
-  const filteredTasks = showCompletedTasks 
-    ? tasks 
-    : tasks.filter(task => !completedTaskIds.includes(task.id));
-
-  const pendingTasks = tasks.filter(task => !completedTaskIds.includes(task.id));
-  const completedTasksCount = completedTaskIds.length;
+  const pendingTasks = tasks.filter(task => !task.completed);
+  const completedTasks = tasks.filter(task => task.completed);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-      className="space-y-4"
-    >
-      <div className="flex items-center justify-between mb-2">
-        <div>
-          <h2 className="text-2xl font-semibold">{title}</h2>
-          <p className="text-muted-foreground">
-            {pendingTasks.length} pending, {completedTasksCount} completed
-          </p>
-        </div>
-        
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex items-center gap-1 text-muted-foreground hover:text-foreground"
-          onClick={() => setShowCompletedTasks(!showCompletedTasks)}
-        >
-          {showCompletedTasks ? (
-            <>
-              <CheckSquare size={16} />
-              <span>Hide Completed</span>
-            </>
-          ) : (
-            <>
-              <Square size={16} />
-              <span>Show Completed</span>
-            </>
+    <div className="space-y-4">
+      {title && (
+        <h2 className="text-lg font-medium">{title}</h2>
+      )}
+      
+      {pendingTasks.length > 0 && (
+        <div className="space-y-3">
+          {pendingTasks.length > 0 && (
+            <h3 className="text-sm font-medium text-muted-foreground">Pending</h3>
           )}
-        </Button>
-      </div>
-
-      <div className="space-y-4">
-        {filteredTasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            task={{
-              ...task,
-              completed: completedTaskIds.includes(task.id) || task.completed
-            }}
-            onComplete={handleCompleteTask}
-          />
-        ))}
-        
-        {filteredTasks.length === 0 && (
-          <div className="text-center py-8 text-muted-foreground bg-gray-50 rounded-lg">
-            {pendingTasks.length === 0 ? (
-              <p>All tasks completed! Great job!</p>
-            ) : (
-              <p>No tasks to show. Adjust filters to see more.</p>
-            )}
-          </div>
-        )}
-      </div>
-    </motion.div>
+          {pendingTasks.map((task) => (
+            <TaskCard 
+              key={task.id} 
+              task={task} 
+              onComplete={onComplete}
+              onEdit={onEditTask}
+            />
+          ))}
+        </div>
+      )}
+      
+      {completedTasks.length > 0 && (
+        <div className="space-y-3 mt-6">
+          <h3 className="text-sm font-medium text-muted-foreground">Completed</h3>
+          {completedTasks.map((task) => (
+            <TaskCard 
+              key={task.id} 
+              task={task} 
+              onEdit={onEditTask}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 

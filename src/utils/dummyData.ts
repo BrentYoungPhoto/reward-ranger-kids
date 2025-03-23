@@ -26,6 +26,7 @@ export interface Task {
   reward?: Reward;
   recurrence?: RecurrenceType;
   lastCompleted?: string;
+  imageURL?: string;
 }
 
 export interface Achievement {

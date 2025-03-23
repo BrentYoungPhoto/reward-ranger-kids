@@ -3,7 +3,7 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { CheckSquare, Gift, Award, Plus } from 'lucide-react';
+import { CheckSquare, Gift, Award, Plus, Pencil } from 'lucide-react';
 import TaskList from '@/components/TaskList';
 import RewardCard from '@/components/RewardCard';
 import { Task, Reward, User } from '@/utils/dummyData';
@@ -14,6 +14,7 @@ interface ChildTasksProps {
   selectedChild: User | undefined;
   onAddTask: () => void;
   onAddReward: () => void;
+  onEditTask?: (task: Task) => void;
 }
 
 const ChildTasks: React.FC<ChildTasksProps> = ({ 
@@ -21,7 +22,8 @@ const ChildTasks: React.FC<ChildTasksProps> = ({
   rewards, 
   selectedChild,
   onAddTask,
-  onAddReward
+  onAddReward,
+  onEditTask
 }) => {
   return (
     <div className="bg-white rounded-lg shadow-subtle">
@@ -69,6 +71,7 @@ const ChildTasks: React.FC<ChildTasksProps> = ({
           <TaskList 
             tasks={tasks} 
             title={`${selectedChild?.name || 'Child'}'s Tasks`}
+            onEditTask={onEditTask}
           />
         </TabsContent>
         

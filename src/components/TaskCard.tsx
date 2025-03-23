@@ -5,15 +5,16 @@ import { Task, icons } from '@/utils/dummyData';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Award, RefreshCw } from 'lucide-react';
+import { Calendar, Award, RefreshCw, Pencil, Image } from 'lucide-react';
 
 interface TaskCardProps {
   task: Task;
   onComplete?: (id: string) => void;
+  onEdit?: (task: Task) => void;
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete }) => {
-  const { id, title, description, points, completed, dueDate, icon, reward, recurrence } = task;
+const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete, onEdit }) => {
+  const { id, title, description, points, completed, dueDate, icon, reward, recurrence, imageURL } = task;
   const IconComponent = icons[icon];
   
   const formattedDate = new Date(dueDate).toLocaleDateString('en-US', {
@@ -25,6 +26,12 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete }) => {
     if (onComplete) {
       onComplete(id);
       toast.success('Task completed! Points added.');
+    }
+  };
+
+  const handleEdit = () => {
+    if (onEdit) {
+      onEdit(task);
     }
   };
 
@@ -43,6 +50,15 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete }) => {
       whileHover={{ scale: 1.02 }}
       className={`neo-card p-5 transition-all ${completed ? 'bg-gray-50' : ''}`}
     >
+      {imageURL && (
+        <div className="mb-4">
+          <img 
+            src={imageURL} 
+            alt={title} 
+            className="w-full h-32 object-cover rounded-lg"
+          />
+        </div>
+      )}
       <div className="flex items-start gap-4">
         <div className={`p-3 rounded-xl ${completed ? 'bg-gray-200' : 'bg-app-blue/10'}`}>
           <IconComponent size={22} className={completed ? 'text-gray-500' : 'text-app-blue'} />
@@ -80,24 +96,45 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete }) => {
                   <span>{reward.title}</span>
                 </div>
               )}
+              
+              {imageURL && (
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <Image size={14} />
+                  <span>Has image</span>
+                </div>
+              )}
             </div>
             
-            {!completed && (
-              <Button 
-                size="sm" 
-                variant="outline"
-                className="text-xs bg-app-green/10 text-app-green hover:bg-app-green hover:text-white border-none"
-                onClick={handleComplete}
-              >
-                Complete
-              </Button>
-            )}
-            
-            {completed && (
-              <Badge variant="outline" className="bg-app-green/10 text-app-green border-none">
-                Completed
-              </Badge>
-            )}
+            <div className="flex gap-2">
+              {onEdit && (
+                <Button 
+                  size="sm" 
+                  variant="outline"
+                  className="text-xs bg-app-blue/10 text-app-blue hover:bg-app-blue hover:text-white border-none"
+                  onClick={handleEdit}
+                >
+                  <Pencil size={14} className="mr-1" />
+                  Edit
+                </Button>
+              )}
+              
+              {!completed && onComplete && (
+                <Button 
+                  size="sm" 
+                  variant="outline"
+                  className="text-xs bg-app-green/10 text-app-green hover:bg-app-green hover:text-white border-none"
+                  onClick={handleComplete}
+                >
+                  Complete
+                </Button>
+              )}
+              
+              {completed && (
+                <Badge variant="outline" className="bg-app-green/10 text-app-green border-none">
+                  Completed
+                </Badge>
+              )}
+            </div>
           </div>
         </div>
       </div>

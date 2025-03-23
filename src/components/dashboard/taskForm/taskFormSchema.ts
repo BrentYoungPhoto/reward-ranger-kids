@@ -14,6 +14,7 @@ export const taskFormSchema = z.object({
   recurrence: z.enum(['none', 'daily', 'weekly', 'monthly'] as [string, ...string[]]),
   rewardTitle: z.string().optional(),
   rewardDescription: z.string().optional(),
+  imageURL: z.string().optional(),
 });
 
 export type TaskFormValues = z.infer<typeof taskFormSchema>;

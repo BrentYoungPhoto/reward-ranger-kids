@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { taskFormSchema, TaskFormValues, IconName } from './taskFormSchema';
 import TaskDetailsFields from './TaskDetailsFields';
 import RewardFields from './RewardFields';
+import ImageUploadField from './ImageUploadField';
 
 interface TaskFormProps {
   isOpen: boolean;
@@ -38,6 +39,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
       recurrence: task?.recurrence || 'none',
       rewardTitle: task?.reward?.title || '',
       rewardDescription: task?.reward?.description || '',
+      imageURL: task?.imageURL || '',
     }
   });
 
@@ -54,6 +56,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
       dueDate: formattedDate,
       recurrence: data.recurrence as RecurrenceType,
       completed: task?.completed || false,
+      imageURL: data.imageURL,
     };
     
     if (includeReward && data.rewardTitle) {
@@ -93,6 +96,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
               setDueDate={setDueDate} 
               children={children} 
             />
+            
+            <ImageUploadField form={form} />
             
             <RewardFields 
               form={form} 
