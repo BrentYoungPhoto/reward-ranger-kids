@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedPage from '@/components/AnimatedPage';
@@ -7,6 +8,7 @@ import {
   rewards,
   getAllChildren,
   getTasksForChild,
+  setTasksForChild,
   Task,
   User
 } from '@/utils/dummyData';
@@ -115,16 +117,29 @@ const ParentDashboard = () => {
     setTaskFormOpen(true);
   };
 
+  const handleCompleteTask = (taskId: string) => {
+    const updatedTasks = childTasks.map(task => 
+      task.id === taskId ? { ...task, completed: true } : task
+    );
+    setChildTasks(updatedTasks);
+    // Save to the shared data store
+    setTasksForChild(selectedChildId, updatedTasks);
+    toast.success('Task marked as completed!');
+  };
+
   const handleSaveTask = (taskData: Partial<Task>) => {
+    let updatedTasks;
+    
     if (taskData.id) {
       // Update existing task
-      setChildTasks(prev => 
-        prev.map(task => 
-          task.id === taskData.id 
-            ? { ...task, ...taskData } as Task
-            : task
-        )
+      updatedTasks = childTasks.map(task => 
+        task.id === taskData.id 
+          ? { ...task, ...taskData } as Task
+          : task
       );
+      setChildTasks(updatedTasks);
+      // Save to the shared data store
+      setTasksForChild(selectedChildId, updatedTasks);
       toast.success(`Updated task: ${taskData.title}`);
     } else {
       // Add new task
@@ -142,7 +157,10 @@ const ParentDashboard = () => {
         imageURL: taskData.imageURL,
       };
       
-      setChildTasks(prev => [...prev, newTask]);
+      updatedTasks = [...childTasks, newTask];
+      setChildTasks(updatedTasks);
+      // Save to the shared data store
+      setTasksForChild(selectedChildId, updatedTasks);
       toast.success(`Added new task: ${newTask.title}`);
     }
   };

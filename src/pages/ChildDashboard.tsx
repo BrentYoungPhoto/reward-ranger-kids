@@ -11,6 +11,7 @@ import ProfileCustomization from '@/components/ProfileCustomization';
 import { 
   getChildById, 
   getTasksForChild, 
+  setTasksForChild,
   achievements,
   rewards,
   User
@@ -19,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Gift, Sparkles, CheckSquare, Award, ArrowLeft } from 'lucide-react';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import { Card, CardContent } from '@/components/ui/card';
+import { toast } from 'sonner';
 
 const ChildDashboard = () => {
   const { childId } = useParams<{ childId: string }>();
@@ -51,6 +53,16 @@ const ChildDashboard = () => {
 
   const handleClaimReward = (id: string) => {
     setClaimedRewardIds(prev => [...prev, id]);
+  };
+
+  const handleCompleteTask = (taskId: string) => {
+    const updatedTasks = childTasks.map(task => 
+      task.id === taskId ? { ...task, completed: true } : task
+    );
+    setChildTasks(updatedTasks);
+    // Save to the shared data store
+    setTasksForChild(childId || '', updatedTasks);
+    toast.success('Task completed! Points earned!');
   };
 
   const handleUpdateProfile = (updates: Partial<User>) => {
@@ -188,7 +200,10 @@ const ChildDashboard = () => {
             {/* Left Column */}
             <div className="md:col-span-2 space-y-6">
               <ProfileCard user={childData} />
-              <TaskList tasks={childTasks} />
+              <TaskList 
+                tasks={childTasks} 
+                onComplete={handleCompleteTask}
+              />
             </div>
             
             {/* Right Column */}

@@ -88,8 +88,8 @@ export const users: User[] = [
   },
 ];
 
-// Demo tasks
-export const tasks: Task[] = [
+// Keep a mutable copy of tasks that can be updated
+let tasksData = [
   {
     id: '1',
     title: 'Clean Your Room',
@@ -245,7 +245,16 @@ export const rewards: Reward[] = [
 
 // Function to get tasks for a specific child
 export const getTasksForChild = (childId: string) => {
-  return tasks.filter(task => task.assignedTo === childId);
+  return tasksData.filter(task => task.assignedTo === childId);
+};
+
+// Function to update tasks for a specific child
+export const setTasksForChild = (childId: string, tasks: Task[]) => {
+  // Remove all tasks for this child
+  tasksData = tasksData.filter(task => task.assignedTo !== childId);
+  // Add the updated tasks
+  tasksData = [...tasksData, ...tasks];
+  return tasks;
 };
 
 // Function to get a child by ID
