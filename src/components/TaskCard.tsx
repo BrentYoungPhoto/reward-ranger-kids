@@ -5,7 +5,7 @@ import { Task, icons } from '@/utils/dummyData';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Award } from 'lucide-react';
+import { Calendar, Award, RefreshCw } from 'lucide-react';
 
 interface TaskCardProps {
   task: Task;
@@ -13,7 +13,7 @@ interface TaskCardProps {
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete }) => {
-  const { id, title, description, points, completed, dueDate, icon, reward } = task;
+  const { id, title, description, points, completed, dueDate, icon, reward, recurrence } = task;
   const IconComponent = icons[icon];
   
   const formattedDate = new Date(dueDate).toLocaleDateString('en-US', {
@@ -27,6 +27,13 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete }) => {
       toast.success('Task completed! Points added.');
     }
   };
+
+  const getRecurrenceLabel = (recurrenceType?: string) => {
+    if (!recurrenceType || recurrenceType === 'none') return null;
+    return `Repeats ${recurrenceType}`;
+  };
+
+  const recurrenceLabel = getRecurrenceLabel(recurrence);
 
   return (
     <motion.div
@@ -54,11 +61,18 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onComplete }) => {
           </div>
           
           <div className="mt-3 flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Calendar size={14} />
                 <span>{formattedDate}</span>
               </div>
+              
+              {recurrenceLabel && (
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <RefreshCw size={14} className="text-app-blue" />
+                  <span>{recurrenceLabel}</span>
+                </div>
+              )}
               
               {reward && (
                 <div className="flex items-center gap-1 text-xs text-muted-foreground">

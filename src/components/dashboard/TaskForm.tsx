@@ -5,12 +5,12 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { icons, Task, User, Reward } from '@/utils/dummyData';
+import { icons, Task, User, Reward, RecurrenceType } from '@/utils/dummyData';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { toast } from 'sonner';
-import { CalendarIcon, Plus } from 'lucide-react';
+import { CalendarIcon, Plus, RefreshCw } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
@@ -26,6 +26,7 @@ const taskFormSchema = z.object({
   assignedTo: z.string({ required_error: "Please select a child" }),
   points: z.coerce.number().min(1, { message: "Points must be at least 1" }),
   icon: z.enum(['star', 'book', 'house', 'trash', 'backpack', 'dog', 'cart'] as [string, ...string[]]),
+  recurrence: z.enum(['none', 'daily', 'weekly', 'monthly'] as [string, ...string[]]),
   rewardTitle: z.string().optional(),
   rewardDescription: z.string().optional(),
 });
@@ -55,6 +56,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
       assignedTo: task?.assignedTo || children[0]?.id || '',
       points: task?.points || 10,
       icon: task?.icon || 'star',
+      recurrence: task?.recurrence || 'none',
       rewardTitle: task?.reward?.title || '',
       rewardDescription: task?.reward?.description || '',
     }
@@ -69,8 +71,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
       description: data.description,
       assignedTo: data.assignedTo,
       points: data.points,
-      icon: data.icon as IconName, // Type assertion to ensure it's a valid icon name
+      icon: data.icon as IconName,
       dueDate: formattedDate,
+      recurrence: data.recurrence as RecurrenceType,
       completed: task?.completed || false,
     };
     
@@ -88,6 +91,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
     toast.success(isEditing ? 'Task updated successfully!' : 'Task added successfully!');
     onClose();
   };
+
+  // Get the current recurrence value
+  const recurrenceValue = form.watch('recurrence');
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -235,6 +241,39 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
                 </Popover>
               </FormItem>
             </div>
+            
+            <FormField
+              control={form.control}
+              name="recurrence"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Recurrence</FormLabel>
+                  <Select 
+                    onValueChange={field.onChange} 
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Set task recurrence" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="none">One-time task</SelectItem>
+                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="weekly">Weekly</SelectItem>
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                  {recurrenceValue !== 'none' && (
+                    <p className="text-xs text-muted-foreground mt-1 flex items-center">
+                      <RefreshCw size={12} className="mr-1" />
+                      This task will repeat {recurrenceValue}
+                    </p>
+                  )}
+                </FormItem>
+              )}
+            />
             
             <div className="border-t pt-4">
               <div className="flex items-center justify-between mb-4">

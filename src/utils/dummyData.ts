@@ -1,4 +1,4 @@
-import { Star, Book, House, Trash, Backpack, Dog, ShoppingCart } from 'lucide-react';
+import { Star, Book, House, Trash, Backpack, Dog, ShoppingCart, RefreshCw } from 'lucide-react';
 
 export interface User {
   id: string;
@@ -12,6 +12,8 @@ export interface User {
   theme?: string;
 }
 
+export type RecurrenceType = 'none' | 'daily' | 'weekly' | 'monthly';
+
 export interface Task {
   id: string;
   title: string;
@@ -22,6 +24,8 @@ export interface Task {
   dueDate: string;
   icon: keyof typeof icons;
   reward?: Reward;
+  recurrence?: RecurrenceType;
+  lastCompleted?: string;
 }
 
 export interface Achievement {
@@ -94,6 +98,7 @@ export const tasks: Task[] = [
     completed: false,
     dueDate: '2023-05-10',
     icon: 'house',
+    recurrence: 'weekly',
     reward: {
       id: '1',
       title: '30 mins Screen Time',
@@ -111,6 +116,7 @@ export const tasks: Task[] = [
     completed: true,
     dueDate: '2023-05-09',
     icon: 'book',
+    recurrence: 'daily',
   },
   {
     id: '3',
@@ -121,6 +127,7 @@ export const tasks: Task[] = [
     completed: false,
     dueDate: '2023-05-11',
     icon: 'trash',
+    recurrence: 'weekly',
     reward: {
       id: '2',
       title: '$5 Pocket Money',
