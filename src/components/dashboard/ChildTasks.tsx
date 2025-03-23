@@ -12,17 +12,17 @@ interface ChildTasksProps {
   tasks: Task[];
   rewards: Reward[];
   selectedChild: User | undefined;
+  onAddTask: () => void;
+  onAddReward: () => void;
 }
 
-const ChildTasks: React.FC<ChildTasksProps> = ({ tasks, rewards, selectedChild }) => {
-  const handleAddTask = () => {
-    toast.info("This would open a task creation form!");
-  };
-  
-  const handleAddReward = () => {
-    toast.info("This would open a reward creation form!");
-  };
-
+const ChildTasks: React.FC<ChildTasksProps> = ({ 
+  tasks, 
+  rewards, 
+  selectedChild,
+  onAddTask,
+  onAddReward
+}) => {
   return (
     <div className="bg-white rounded-lg shadow-subtle">
       <Tabs defaultValue="tasks" className="w-full">
@@ -47,7 +47,7 @@ const ChildTasks: React.FC<ChildTasksProps> = ({ tasks, rewards, selectedChild }
               <Button 
                 size="sm"
                 className="mr-2 bg-app-green hover:bg-app-green/90"
-                onClick={handleAddTask}
+                onClick={onAddTask}
               >
                 <Plus size={16} className="mr-1" />
                 Add Task
@@ -56,7 +56,7 @@ const ChildTasks: React.FC<ChildTasksProps> = ({ tasks, rewards, selectedChild }
                 size="sm"
                 variant="outline"
                 className="border-app-purple text-app-purple hover:bg-app-purple hover:text-white"
-                onClick={handleAddReward}
+                onClick={onAddReward}
               >
                 <Plus size={16} className="mr-1" />
                 Add Reward

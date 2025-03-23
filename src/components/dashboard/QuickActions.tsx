@@ -2,9 +2,14 @@
 import React from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, Gift, User } from 'lucide-react';
+import { Plus, Gift, UserRoundPlus, Settings } from 'lucide-react';
 
-const QuickActions: React.FC = () => {
+interface QuickActionsProps {
+  onAddTask: () => void;
+  onAddChild: () => void;
+}
+
+const QuickActions: React.FC<QuickActionsProps> = ({ onAddTask, onAddChild }) => {
   return (
     <Card>
       <CardHeader>
@@ -12,17 +17,17 @@ const QuickActions: React.FC = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          <Button className="w-full bg-app-blue hover:bg-app-blue/90 justify-start">
+          <Button className="w-full bg-app-blue hover:bg-app-blue/90 justify-start" onClick={onAddTask}>
             <Plus size={16} className="mr-2" />
             Add New Task
           </Button>
-          <Button variant="outline" className="w-full justify-start">
-            <Gift size={16} className="mr-2" />
-            Create New Reward
+          <Button variant="outline" className="w-full justify-start" onClick={onAddChild}>
+            <UserRoundPlus size={16} className="mr-2" />
+            Add New Child
           </Button>
           <Button variant="outline" className="w-full justify-start">
-            <User size={16} className="mr-2" />
-            Manage Children
+            <Settings size={16} className="mr-2" />
+            Settings
           </Button>
         </div>
       </CardContent>
