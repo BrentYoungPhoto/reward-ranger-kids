@@ -42,11 +42,9 @@ const ChildDashboard = () => {
         setChildData(child);
         setChildTasks(tasks);
       } else {
-        // Navigate back to parent dashboard if child not found
         navigate('/parent');
       }
     } else {
-      // Navigate back to parent dashboard if no childId
       navigate('/parent');
     }
   }, [childId, navigate]);
@@ -60,18 +58,15 @@ const ChildDashboard = () => {
       task.id === taskId ? { ...task, completed: true } : task
     );
     setChildTasks(updatedTasks);
-    // Save to the shared data store
     setTasksForChild(childId || '', updatedTasks);
     toast.success('Task completed! Points earned!');
   };
 
   const handleUpdateProfile = (updates: Partial<User>) => {
     if (childData) {
-      // Update local state
       const updatedChild = { ...childData, ...updates };
       setChildData(updatedChild);
       
-      // Save to the shared data store
       if (childId) {
         updateUser(childId, updates);
         toast.success('Profile updated successfully!');
@@ -87,7 +82,6 @@ const ChildDashboard = () => {
     );
   }
 
-  // Apply custom theme colors based on the child's theme preference
   const getThemeColor = () => {
     switch (childData.theme) {
       case 'ocean':
@@ -101,11 +95,10 @@ const ChildDashboard = () => {
       case 'candy':
         return '#ff758c';
       default:
-        return '#9b87f5'; // Default purple theme
+        return '#9b87f5';
     }
   };
 
-  // Get the gradient class based on the theme
   const getGradientClass = () => {
     switch (childData.theme) {
       case 'ocean':
@@ -119,7 +112,7 @@ const ChildDashboard = () => {
       case 'candy':
         return 'bg-gradient-candy';
       default:
-        return ''; // Default - no gradient
+        return '';
     }
   };
 
@@ -127,7 +120,7 @@ const ChildDashboard = () => {
   const gradientClass = getGradientClass();
   const themeStyle = {
     '--app-accent-color': themeColor,
-    '--app-accent-light': `${themeColor}20`, // 20% opacity version for backgrounds
+    '--app-accent-light': `${themeColor}20`,
   } as React.CSSProperties;
 
   return (
@@ -150,11 +143,8 @@ const ChildDashboard = () => {
           </Button>
         </DashboardHeader>
         
-        {/* Main Content */}
         <div className="container max-w-5xl mx-auto px-4 sm:px-6 pt-6">
-          {/* Activity Tiles Row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-            {/* Customize Tile */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -167,7 +157,6 @@ const ChildDashboard = () => {
               <span className="font-bold text-center">Change My Look!</span>
             </motion.div>
             
-            {/* Tasks Tile */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -178,7 +167,6 @@ const ChildDashboard = () => {
               <span className="text-xs text-muted-foreground">{childTasks.filter(t => !t.completed).length} to do</span>
             </motion.div>
             
-            {/* Rewards Tile */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -189,7 +177,6 @@ const ChildDashboard = () => {
               <span className="text-xs text-muted-foreground">{rewards.filter(r => !r.claimed).length} available</span>
             </motion.div>
             
-            {/* Achievements Tile */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -202,7 +189,6 @@ const ChildDashboard = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Left Column */}
             <div className="md:col-span-2 space-y-6">
               <ProfileCard user={childData} />
               <TaskList 
@@ -211,7 +197,6 @@ const ChildDashboard = () => {
               />
             </div>
             
-            {/* Right Column */}
             <div className="space-y-6">
               <AchievementTracker achievements={achievements} user={childData} />
               
@@ -234,7 +219,6 @@ const ChildDashboard = () => {
           </div>
         </div>
 
-        {/* Hidden Dialog Trigger for Profile Customization */}
         <div className="hidden">
           <ProfileCustomization 
             user={childData}

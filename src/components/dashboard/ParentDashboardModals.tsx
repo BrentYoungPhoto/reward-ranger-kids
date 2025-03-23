@@ -26,7 +26,7 @@ const ParentDashboardModals: React.FC = () => {
   return (
     <>
       <ChildForm 
-        open={childFormOpen}
+        isOpen={childFormOpen}
         child={childToEdit}
         onClose={() => setChildFormOpen(false)}
         onSave={handleSaveChild}

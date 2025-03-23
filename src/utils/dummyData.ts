@@ -207,6 +207,9 @@ for (let i = 1; i <= 25; i++) {
 achievementsData[0].unlocked = true;
 achievementsData[1].unlocked = true;
 
+// Export the achievements data for use in components
+export const achievements = achievementsData;
+
 // Demo rewards
 export const rewards: Reward[] = [
   {
