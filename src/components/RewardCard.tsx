@@ -3,7 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Reward } from '@/utils/dummyData';
 import { Button } from '@/components/ui/button';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { Gift, CheckCircle } from 'lucide-react';
 
 interface RewardCardProps {

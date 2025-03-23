@@ -3,7 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Task, icons } from '@/utils/dummyData';
 import { Button } from '@/components/ui/button';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Award } from 'lucide-react';
 
