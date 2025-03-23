@@ -1,3 +1,4 @@
+
 import { Star, Book, House, Trash, Backpack, Dog, ShoppingCart, RefreshCw } from 'lucide-react';
 
 export interface User {
@@ -265,4 +266,17 @@ export const getChildById = (childId: string) => {
 // Function to get all children
 export const getAllChildren = () => {
   return users.filter(user => user.role === 'child');
+};
+
+// Function to update user data
+export const updateUser = (userId: string, updates: Partial<User>): User | undefined => {
+  const userIndex = users.findIndex(user => user.id === userId);
+  
+  if (userIndex !== -1) {
+    // Update the user
+    users[userIndex] = { ...users[userIndex], ...updates };
+    return users[userIndex];
+  }
+  
+  return undefined;
 };

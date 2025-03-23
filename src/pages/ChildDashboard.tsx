@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useParams, useNavigate } from 'react-router-dom';
@@ -12,6 +11,7 @@ import {
   getChildById, 
   getTasksForChild, 
   setTasksForChild,
+  updateUser,
   achievements,
   rewards,
   User
@@ -67,10 +67,15 @@ const ChildDashboard = () => {
 
   const handleUpdateProfile = (updates: Partial<User>) => {
     if (childData) {
+      // Update local state
       const updatedChild = { ...childData, ...updates };
       setChildData(updatedChild);
-      // In a real app, you would save this to the backend
-      console.log('Profile updated:', updatedChild);
+      
+      // Save to the shared data store
+      if (childId) {
+        updateUser(childId, updates);
+        toast.success('Profile updated successfully!');
+      }
     }
   };
 
@@ -131,7 +136,7 @@ const ChildDashboard = () => {
         className={`min-h-screen pb-10 relative ${gradientClass}`} 
         style={themeStyle}
       >
-        <DashboardHeader title={`${childData.displayName || childData.name}'s Dashboard`}>
+        <DashboardHeader title={`${childData?.displayName || childData?.name}'s Dashboard`}>
           <Button 
             variant="outline" 
             size="sm" 
