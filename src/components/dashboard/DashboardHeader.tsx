@@ -1,26 +1,32 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import React, { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
 interface DashboardHeaderProps {
   title: string;
+  subtitle?: string;
+  className?: string;
+  children?: ReactNode;
 }
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({ title }) => {
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({ 
+  title, 
+  subtitle,
+  className,
+  children
+}) => {
   return (
-    <div className="bg-white/70 backdrop-blur-md shadow-subtle">
-      <div className="container max-w-5xl mx-auto py-4 px-4 sm:px-6">
+    <div className={cn(
+      "bg-white border-b border-gray-200 shadow-sm",
+      className
+    )}>
+      <div className="container max-w-5xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
-          <Link to="/">
-            <Button variant="ghost" className="flex items-center gap-1 text-sm bg-white/50 backdrop-blur-sm hover:bg-white/80">
-              <ArrowLeft size={16} />
-              Back to Home
-            </Button>
-          </Link>
-          <h1 className="text-xl font-semibold">{title}</h1>
-          <div className="w-10"></div> {/* For balance */}
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+            {subtitle && <p className="text-gray-500 mt-1">{subtitle}</p>}
+          </div>
+          {children}
         </div>
       </div>
     </div>

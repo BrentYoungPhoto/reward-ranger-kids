@@ -4,9 +4,10 @@ import { motion } from 'framer-motion';
 import { User } from '@/utils/dummyData';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Edit, Plus, UserRoundPlus, Trash2 } from 'lucide-react';
+import { Edit, Plus, UserRoundPlus, Trash2, LogIn } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Link } from 'react-router-dom';
 
 interface ChildOverviewProps {
   children: User[];
@@ -92,6 +93,16 @@ const ChildOverview: React.FC<ChildOverviewProps> = ({
                   </div>
                 </button>
                 <div className="absolute top-2 right-2 flex gap-1">
+                  <Button 
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7"
+                    asChild
+                  >
+                    <Link to={`/child/${child.id}`} aria-label={`View ${child.name}'s dashboard`}>
+                      <LogIn size={14} className="text-gray-500" />
+                    </Link>
+                  </Button>
                   <button 
                     className="p-1.5 bg-white rounded-full shadow-sm border border-gray-200 hover:bg-gray-50"
                     onClick={() => onEditChild(child)}

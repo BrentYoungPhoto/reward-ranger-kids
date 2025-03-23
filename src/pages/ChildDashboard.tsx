@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import AnimatedPage from '@/components/AnimatedPage';
 import ProfileCard from '@/components/ProfileCard';
 import TaskList from '@/components/TaskList';
@@ -21,14 +21,33 @@ import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import { Card, CardContent } from '@/components/ui/card';
 
 const ChildDashboard = () => {
-  // For demo purposes, we're using child with ID 1
-  const childId = '1';
-  const [childData, setChildData] = useState<User | null>(getChildById(childId));
-  const childTasks = getTasksForChild(childId);
+  const { childId } = useParams<{ childId: string }>();
+  const navigate = useNavigate();
+  
+  const [childData, setChildData] = useState<User | null>(null);
+  const [childTasks, setChildTasks] = useState<any[]>([]);
   
   const [claimedRewardIds, setClaimedRewardIds] = useState<string[]>(
     rewards.filter(reward => reward.claimed).map(reward => reward.id)
   );
+
+  useEffect(() => {
+    if (childId) {
+      const child = getChildById(childId);
+      const tasks = getTasksForChild(childId);
+      
+      if (child) {
+        setChildData(child);
+        setChildTasks(tasks);
+      } else {
+        // Navigate back to parent dashboard if child not found
+        navigate('/parent');
+      }
+    } else {
+      // Navigate back to parent dashboard if no childId
+      navigate('/parent');
+    }
+  }, [childId, navigate]);
 
   const handleClaimReward = (id: string) => {
     setClaimedRewardIds(prev => [...prev, id]);
@@ -46,7 +65,7 @@ const ChildDashboard = () => {
   if (!childData) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p>Child not found</p>
+        <p>Loading...</p>
       </div>
     );
   }
@@ -100,7 +119,19 @@ const ChildDashboard = () => {
         className={`min-h-screen pb-10 relative ${gradientClass}`} 
         style={themeStyle}
       >
-        <DashboardHeader title={`${childData.displayName || childData.name}'s Dashboard`} />
+        <DashboardHeader title={`${childData.displayName || childData.name}'s Dashboard`}>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="bg-white/80"
+            asChild
+          >
+            <Link to="/parent">
+              <ArrowLeft size={16} className="mr-1" />
+              Back to Parent Dashboard
+            </Link>
+          </Button>
+        </DashboardHeader>
         
         {/* Main Content */}
         <div className="container max-w-5xl mx-auto px-4 sm:px-6 pt-6">
