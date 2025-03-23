@@ -27,7 +27,7 @@ const ParentDashboardModals: React.FC = () => {
       />
 
       <TaskForm 
-        isOpen={taskFormOpen}
+        open={taskFormOpen}
         onClose={() => setTaskFormOpen(false)}
         onSave={handleSaveTask}
         task={taskToEdit}

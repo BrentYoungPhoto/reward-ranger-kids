@@ -14,14 +14,14 @@ import RewardFields from './RewardFields';
 import ImageUploadField from './ImageUploadField';
 
 interface TaskFormProps {
-  isOpen: boolean;
+  open: boolean; // Changed from isOpen to open
   onClose: () => void;
   onSave: (task: Partial<Task>) => void;
   task?: Task;
   children: User[];
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, children }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ open, onClose, onSave, task, children }) => {
   const [dueDate, setDueDate] = useState<Date | undefined>(
     task?.dueDate ? new Date(task.dueDate) : new Date()
   );
@@ -45,7 +45,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
 
   // Reset form when task changes (especially important for edit mode)
   useEffect(() => {
-    if (isOpen) {
+    if (open) {
       form.reset({
         title: task?.title || '',
         description: task?.description || '',
@@ -61,7 +61,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
       setDueDate(task?.dueDate ? new Date(task.dueDate) : new Date());
       setIncludeReward(!!task?.reward);
     }
-  }, [task, isOpen, form, children]);
+  }, [task, open, form, children]);
 
   const onSubmit = (data: TaskFormValues) => {
     const formattedDate = dueDate ? format(dueDate, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
@@ -95,7 +95,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
