@@ -64,15 +64,8 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <DialogTrigger asChild>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-center justify-center gap-2 bg-white rounded-full p-3 shadow-lg absolute bottom-6 right-6 border-2 border-dashed border-app-blue"
-        >
-          <Sparkles size={24} className="text-app-blue" />
-          <span className="font-bold text-app-blue">Customize!</span>
-        </motion.button>
+      <DialogTrigger asChild id="profile-customization-dialog">
+        <button className="hidden">Customize Profile</button>
       </DialogTrigger>
       
       <DialogContent className="sm:max-w-md rounded-xl">
