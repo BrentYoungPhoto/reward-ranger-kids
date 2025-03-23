@@ -29,7 +29,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="neo-card p-6 relative overflow-hidden"
+      className="neo-card p-6 relative overflow-hidden backdrop-blur-sm bg-white/80"
       style={{ '--app-blue': 'var(--app-accent-color, #9b87f5)' } as React.CSSProperties}
     >
       <div className="absolute top-0 right-0 w-24 h-24 bg-app-blue/10 rounded-bl-full z-0"></div>

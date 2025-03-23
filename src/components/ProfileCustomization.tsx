@@ -1,13 +1,12 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Palette, Image, SmilePlus, User } from 'lucide-react';
+import { Palette, Image, SmilePlus, User, Sparkles } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { User as UserType } from '@/utils/dummyData';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 
 interface ProfileCustomizationProps {
@@ -16,11 +15,12 @@ interface ProfileCustomizationProps {
 }
 
 const THEME_OPTIONS = [
-  { value: 'default', label: 'Default Theme', color: '#9b87f5' },
-  { value: 'ocean', label: 'Ocean Blue', color: '#0EA5E9' },
-  { value: 'sunset', label: 'Sunset Orange', color: '#F97316' },
-  { value: 'forest', label: 'Forest Green', color: '#22C55E' },
-  { value: 'berry', label: 'Berry Purple', color: '#D946EF' },
+  { value: 'default', label: 'Default Purple', color: '#9b87f5', gradient: 'none' },
+  { value: 'ocean', label: 'Ocean Blue', color: '#0EA5E9', gradient: 'gradient-ocean' },
+  { value: 'sunset', label: 'Sunset Orange', color: '#F97316', gradient: 'gradient-sunset' },
+  { value: 'forest', label: 'Forest Green', color: '#22C55E', gradient: 'gradient-forest' },
+  { value: 'berry', label: 'Berry Purple', color: '#D946EF', gradient: 'gradient-berry' },
+  { value: 'candy', label: 'Pink Candy', color: '#ff758c', gradient: 'gradient-candy' },
 ];
 
 const MOOD_OPTIONS = [
@@ -36,6 +36,7 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
   const [mood, setMood] = useState(user.mood || 'happy');
   const [theme, setTheme] = useState(user.theme || 'default');
   const [avatarUrl, setAvatarUrl] = useState(user.avatar);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleSaveChanges = () => {
     onUpdateProfile({
@@ -44,6 +45,7 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
       theme,
       avatar: avatarUrl
     });
+    setDialogOpen(false);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,108 +58,115 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
     }
   };
 
-  const getThemeColor = (themeValue: string) => {
-    return THEME_OPTIONS.find(t => t.value === themeValue)?.color || '#9b87f5';
+  const getThemeGradient = (themeValue: string) => {
+    return THEME_OPTIONS.find(t => t.value === themeValue)?.gradient || 'none';
   };
 
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button 
-          variant="outline" 
-          className="w-full mt-4 border-dashed border-2"
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center justify-center gap-2 bg-white rounded-full p-3 shadow-lg absolute bottom-6 right-6 border-2 border-dashed border-app-blue"
         >
-          <Palette size={16} className="mr-2" />
-          Customize Profile
-        </Button>
+          <Sparkles size={24} className="text-app-blue" />
+          <span className="font-bold text-app-blue">Customize!</span>
+        </motion.button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      
+      <DialogContent className="sm:max-w-md rounded-xl">
         <DialogHeader>
-          <DialogTitle>Customize Your Profile</DialogTitle>
+          <DialogTitle className="text-2xl text-center mb-4">Make it YOURS!</DialogTitle>
         </DialogHeader>
         
         <div className="grid gap-6 py-4">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-center gap-4">
             <div className="relative">
-              <Avatar className="h-24 w-24">
-                <AvatarImage src={avatarUrl} alt={displayName} />
-                <AvatarFallback>{displayName.substring(0, 2).toUpperCase()}</AvatarFallback>
-              </Avatar>
-              <label htmlFor="avatar-upload" className="absolute -bottom-2 -right-2 bg-background rounded-full p-1 border cursor-pointer">
-                <Image size={18} />
-                <input 
-                  id="avatar-upload" 
-                  type="file" 
-                  accept="image/*" 
-                  className="hidden" 
-                  onChange={handleFileChange} 
-                />
-              </label>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Avatar className="h-24 w-24 border-4 border-white shadow-lg">
+                  <AvatarImage src={avatarUrl} alt={displayName} />
+                  <AvatarFallback>{displayName.substring(0, 2).toUpperCase()}</AvatarFallback>
+                </Avatar>
+                <label htmlFor="avatar-upload" className="absolute -bottom-2 -right-2 bg-background rounded-full p-2 border-2 border-app-blue cursor-pointer shadow-md">
+                  <Image size={20} className="text-app-blue" />
+                  <input 
+                    id="avatar-upload" 
+                    type="file" 
+                    accept="image/*" 
+                    className="hidden" 
+                    onChange={handleFileChange} 
+                  />
+                </label>
+              </motion.div>
             </div>
-            <div className="flex-1">
-              <Label htmlFor="display-name">Display Name</Label>
+            
+            <div className="w-full">
+              <Label htmlFor="display-name" className="text-lg mb-1 block">My Nickname</Label>
               <div className="flex items-center gap-2">
-                <User size={18} className="text-muted-foreground" />
+                <User size={20} className="text-muted-foreground" />
                 <Input
                   id="display-name"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   placeholder="Your display name"
-                  className="flex-1"
+                  className="flex-1 text-lg"
                 />
               </div>
             </div>
           </div>
           
           <div>
-            <Label htmlFor="mood-select">Your Mood</Label>
-            <div className="flex items-center gap-2">
-              <SmilePlus size={18} className="text-muted-foreground" />
-              <Select value={mood} onValueChange={setMood}>
-                <SelectTrigger id="mood-select" className="w-full">
-                  <SelectValue placeholder="Select your mood" />
-                </SelectTrigger>
-                <SelectContent>
-                  {MOOD_OPTIONS.map(option => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <Label htmlFor="mood-select" className="text-lg mb-2 block">How do you feel today?</Label>
+            <div className="grid grid-cols-5 gap-2">
+              {MOOD_OPTIONS.map(option => (
+                <motion.button
+                  key={option.value}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setMood(option.value)}
+                  className={`flex flex-col items-center p-3 rounded-lg ${
+                    mood === option.value ? 'bg-app-blue text-white' : 'bg-gray-100'
+                  }`}
+                >
+                  <span className="text-2xl">{option.label.split(' ')[1]}</span>
+                  <span className="text-xs mt-1">{option.label.split(' ')[0]}</span>
+                </motion.button>
+              ))}
             </div>
           </div>
           
           <div>
-            <Label htmlFor="theme-select">Dashboard Theme</Label>
-            <div className="flex items-center gap-2">
-              <Palette size={18} className="text-muted-foreground" />
-              <Select value={theme} onValueChange={setTheme}>
-                <SelectTrigger id="theme-select" className="w-full">
-                  <SelectValue placeholder="Select a theme" />
-                </SelectTrigger>
-                <SelectContent>
-                  {THEME_OPTIONS.map(option => (
-                    <SelectItem key={option.value} value={option.value}>
-                      <div className="flex items-center gap-2">
-                        <div 
-                          className="w-4 h-4 rounded-full" 
-                          style={{ backgroundColor: option.color }}
-                        />
-                        {option.label}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <Label className="text-lg mb-2 block">Choose your colors!</Label>
+            <div className="grid grid-cols-3 gap-3">
+              {THEME_OPTIONS.map(option => (
+                <motion.button
+                  key={option.value}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setTheme(option.value)}
+                  className={`
+                    p-3 h-24 rounded-lg flex flex-col items-center justify-center
+                    ${option.gradient !== 'none' ? `bg-${option.gradient}` : ''}
+                    ${theme === option.value ? 'ring-4 ring-black' : 'ring-1 ring-gray-200'}
+                  `}
+                  style={option.gradient === 'none' ? { backgroundColor: option.color } : {}}
+                >
+                  <span className="font-bold text-white drop-shadow-md">{option.label}</span>
+                </motion.button>
+              ))}
             </div>
           </div>
           
-          <div className="mt-6">
-            <div className="flex items-center justify-between">
-              <div className="w-16 h-8 rounded-full" style={{ background: getThemeColor(theme) }}></div>
-              <Button onClick={handleSaveChanges}>Save Changes</Button>
-            </div>
+          <div className="mt-6 flex justify-center">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleSaveChanges}
+              className="bg-app-blue text-white py-3 px-8 rounded-full text-lg font-bold shadow-lg"
+            >
+              I'm done!
+            </motion.button>
           </div>
         </div>
       </DialogContent>

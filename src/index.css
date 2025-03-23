@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -33,9 +32,18 @@
     --app-green: #81dfa7;
     --app-red: #f87272;
     
-    /* Theme colors - will be overridden at runtime */
     --app-accent-color: #9b87f5;
     --app-accent-light: rgba(155, 135, 245, 0.1);
+
+    /* Gradient backgrounds */
+    --gradient-sunset: linear-gradient(to right, #f6d365 0%, #fda085 100%);
+    --gradient-ocean: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    --gradient-forest: linear-gradient(to right, #00b09b, #96c93d);
+    --gradient-berry: linear-gradient(to right, #a445b2, #d41872, #ff0066);
+    --gradient-candy: linear-gradient(to right, #ff758c 0%, #ff7eb3 100%);
+    
+    /* Default gradient */
+    --app-gradient: var(--gradient-sunset);
   }
 
   .dark {
@@ -78,6 +86,10 @@
   .shadow-subtle {
     @apply shadow-[0_2px_10px_rgba(0,0,0,0.05)];
   }
+
+  .gradient-background {
+    background: var(--app-gradient);
+  }
 }
 
 /* App specific classes */
@@ -107,4 +119,25 @@
 
 .text-app-yellow {
   color: var(--app-yellow);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-sunset {
+  background: var(--gradient-sunset);
+}
+
+.bg-gradient-ocean {
+  background: var(--gradient-ocean);
+}
+
+.bg-gradient-forest {
+  background: var(--gradient-forest);
+}
+
+.bg-gradient-berry {
+  background: var(--gradient-berry);
+}
+
+.bg-gradient-candy {
+  background: var(--gradient-candy);
 }

@@ -10,11 +10,11 @@ interface DashboardHeaderProps {
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({ title }) => {
   return (
-    <div className="bg-white shadow-subtle">
+    <div className="bg-white/70 backdrop-blur-md shadow-subtle">
       <div className="container max-w-5xl mx-auto py-4 px-4 sm:px-6">
         <div className="flex justify-between items-center">
           <Link to="/">
-            <Button variant="ghost" className="flex items-center gap-1 text-sm">
+            <Button variant="ghost" className="flex items-center gap-1 text-sm bg-white/50 backdrop-blur-sm hover:bg-white/80">
               <ArrowLeft size={16} />
               Back to Home
             </Button>

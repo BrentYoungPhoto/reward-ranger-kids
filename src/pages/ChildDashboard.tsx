@@ -61,12 +61,33 @@ const ChildDashboard = () => {
         return '#22C55E';
       case 'berry':
         return '#D946EF';
+      case 'candy':
+        return '#ff758c';
       default:
         return '#9b87f5'; // Default purple theme
     }
   };
 
+  // Get the gradient class based on the theme
+  const getGradientClass = () => {
+    switch (childData.theme) {
+      case 'ocean':
+        return 'bg-gradient-ocean';
+      case 'sunset':
+        return 'bg-gradient-sunset';
+      case 'forest':
+        return 'bg-gradient-forest';
+      case 'berry':
+        return 'bg-gradient-berry';
+      case 'candy':
+        return 'bg-gradient-candy';
+      default:
+        return ''; // Default - no gradient
+    }
+  };
+
   const themeColor = getThemeColor();
+  const gradientClass = getGradientClass();
   const themeStyle = {
     '--app-accent-color': themeColor,
     '--app-accent-light': `${themeColor}20`, // 20% opacity version for backgrounds
@@ -74,7 +95,10 @@ const ChildDashboard = () => {
 
   return (
     <AnimatedPage>
-      <div className="min-h-screen bg-gray-50 pb-10" style={themeStyle}>
+      <div 
+        className={`min-h-screen pb-10 relative ${gradientClass}`} 
+        style={themeStyle}
+      >
         <DashboardHeader title={`${childData.displayName || childData.name}'s Dashboard`} />
         
         {/* Main Content */}
@@ -94,7 +118,7 @@ const ChildDashboard = () => {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-medium">My Rewards</h3>
                   <Link to="/">
-                    <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                    <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground bg-white/50 backdrop-blur-sm">
                       <Gift size={16} className="mr-1" />
                       All Rewards
                     </Button>
@@ -113,15 +137,16 @@ const ChildDashboard = () => {
                     />
                   ))}
                 </div>
-
-                <ProfileCustomization 
-                  user={childData}
-                  onUpdateProfile={handleUpdateProfile}
-                />
               </div>
             </div>
           </div>
         </div>
+
+        {/* Profile Customization - Now positioned as a floating button */}
+        <ProfileCustomization 
+          user={childData}
+          onUpdateProfile={handleUpdateProfile}
+        />
       </div>
     </AnimatedPage>
   );
