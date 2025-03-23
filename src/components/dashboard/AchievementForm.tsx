@@ -65,15 +65,21 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
       description: achievement?.description || '',
       pointsNeeded: achievement?.pointsNeeded || 100,
       icon: achievement?.icon || '🏆',
-      rewardId: achievement?.rewardId || '',
+      rewardId: achievement?.rewardId || 'none',
       level: achievement?.level || 1
     }
   });
 
   const handleSubmit = (values: AchievementFormValues) => {
+    // Convert 'none' to empty string or undefined for the rewardId
+    const submissionValues = {
+      ...values,
+      rewardId: values.rewardId === 'none' ? undefined : values.rewardId
+    };
+    
     onSave({
       id: achievement?.id,
-      ...values,
+      ...submissionValues,
       unlocked: achievement?.unlocked || false
     });
     form.reset();
@@ -208,7 +214,7 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="">No reward</SelectItem>
+                      <SelectItem value="none">No reward</SelectItem>
                       {rewards.map(reward => (
                         <SelectItem key={reward.id} value={reward.id}>
                           <div className="flex items-center">
