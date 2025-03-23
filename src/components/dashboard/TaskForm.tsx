@@ -17,12 +17,15 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
+// Define a type for valid icon names
+type IconName = keyof typeof icons;
+
 const taskFormSchema = z.object({
   title: z.string().min(3, { message: "Title must be at least 3 characters" }),
   description: z.string().min(5, { message: "Description must be at least 5 characters" }),
   assignedTo: z.string({ required_error: "Please select a child" }),
   points: z.coerce.number().min(1, { message: "Points must be at least 1" }),
-  icon: z.string().optional(),
+  icon: z.enum(['star', 'book', 'house', 'trash', 'backpack', 'dog', 'cart'] as [string, ...string[]]),
   rewardTitle: z.string().optional(),
   rewardDescription: z.string().optional(),
 });
@@ -61,8 +64,12 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
     const formattedDate = dueDate ? format(dueDate, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
     
     const newTask: Partial<Task> = {
-      ...data,
       id: task?.id,
+      title: data.title,
+      description: data.description,
+      assignedTo: data.assignedTo,
+      points: data.points,
+      icon: data.icon as IconName, // Type assertion to ensure it's a valid icon name
       dueDate: formattedDate,
       completed: task?.completed || false,
     };
