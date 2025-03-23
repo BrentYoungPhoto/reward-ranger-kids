@@ -1,137 +1,100 @@
 
-import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Form } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { Task, User, RecurrenceType } from '@/utils/dummyData';
+import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { format } from 'date-fns';
-import { toast } from 'sonner';
-import { taskFormSchema, TaskFormValues, IconName } from './taskFormSchema';
+import { z } from 'zod';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Form } from '@/components/ui/form';
+import { Task } from '@/utils/types';
+import { taskFormSchema } from './taskFormSchema';
 import TaskDetailsFields from './TaskDetailsFields';
-import RewardFields from './RewardFields';
 import ImageUploadField from './ImageUploadField';
+import RewardFields from './RewardFields';
+import { toast } from 'sonner';
+
+export type TaskFormValues = z.infer<typeof taskFormSchema>;
 
 interface TaskFormProps {
-  isOpen: boolean;
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   onSave: (task: Partial<Task>) => void;
   task?: Task;
-  children: User[];
+  childId: string;
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, children }) => {
-  const [dueDate, setDueDate] = useState<Date | undefined>(
-    task?.dueDate ? new Date(task.dueDate) : new Date()
-  );
-  const [includeReward, setIncludeReward] = useState<boolean>(!!task?.reward);
-  const isEditing = !!task;
-
+const TaskForm: React.FC<TaskFormProps> = ({
+  open,
+  onOpenChange,
+  onSave,
+  task,
+  childId,
+}) => {
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
-    defaultValues: {
-      title: task?.title || '',
-      description: task?.description || '',
-      assignedTo: task?.assignedTo || children[0]?.id || '',
-      points: task?.points || 10,
-      icon: task?.icon || 'star',
-      recurrence: task?.recurrence || 'none',
-      rewardTitle: task?.reward?.title || '',
-      rewardDescription: task?.reward?.description || '',
-      imageURL: task?.imageURL || '',
-    }
+    defaultValues: task
+      ? {
+          ...task,
+          icon: task.icon as string, // Fix for the type issue
+          dueDate: task.dueDate ? new Date(task.dueDate) : new Date(),
+        }
+      : {
+          title: '',
+          description: '',
+          points: 10,
+          icon: 'star' as string, // Fix for the type issue
+          dueDate: new Date(),
+          recurrence: 'none',
+          assignedTo: childId,
+        },
   });
 
-  // Reset form when task changes (especially important for edit mode)
-  useEffect(() => {
-    if (isOpen) {
-      form.reset({
-        title: task?.title || '',
-        description: task?.description || '',
-        assignedTo: task?.assignedTo || children[0]?.id || '',
-        points: task?.points || 10,
-        icon: task?.icon || 'star',
-        recurrence: task?.recurrence || 'none',
-        rewardTitle: task?.reward?.title || '',
-        rewardDescription: task?.reward?.description || '',
-        imageURL: task?.imageURL || '',
-      });
-      
-      setDueDate(task?.dueDate ? new Date(task.dueDate) : new Date());
-      setIncludeReward(!!task?.reward);
-    }
-  }, [task, isOpen, form, children]);
-
   const onSubmit = (data: TaskFormValues) => {
-    const formattedDate = dueDate ? format(dueDate, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
-    
-    const newTask: Partial<Task> = {
+    // Convert the date to ISO string format
+    const formattedData = {
+      ...data,
+      dueDate: data.dueDate.toISOString().split('T')[0],
       id: task?.id,
-      title: data.title,
-      description: data.description,
-      assignedTo: data.assignedTo,
-      points: data.points,
-      icon: data.icon as IconName,
-      dueDate: formattedDate,
-      recurrence: data.recurrence as RecurrenceType,
-      completed: task?.completed || false,
-      imageURL: data.imageURL,
     };
-    
-    if (includeReward && data.rewardTitle) {
-      newTask.reward = {
-        id: task?.reward?.id || `reward-${Date.now()}`,
-        title: data.rewardTitle,
-        description: data.rewardDescription || '',
-        icon: 'star',
-        claimed: false,
-      };
-    }
-    
-    onSave(newTask);
-    toast.success(isEditing ? 'Task updated successfully!' : 'Task added successfully!');
-    onClose();
+
+    onSave(formattedData);
+    onOpenChange(false);
+    form.reset();
+    toast.success(task ? 'Task updated successfully!' : 'Task created successfully!');
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            {isEditing ? 'Edit Task' : 'Create New Task'}
-          </DialogTitle>
-          <DialogDescription>
-            {isEditing 
-              ? "Update the task details below."
-              : "Fill in the details to create a new task."}
-          </DialogDescription>
+          <DialogTitle>{task ? 'Edit Task' : 'Create New Task'}</DialogTitle>
         </DialogHeader>
-        
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <TaskDetailsFields 
-              form={form} 
-              dueDate={dueDate} 
-              setDueDate={setDueDate} 
-              children={children} 
-            />
-            
-            <ImageUploadField form={form} />
-            
-            <RewardFields 
-              form={form} 
-              includeReward={includeReward} 
-              setIncludeReward={setIncludeReward} 
-            />
-            
-            <div className="flex justify-end gap-2 pt-4 pb-2">
-              <Button variant="outline" type="button" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button type="submit">
-                {isEditing ? 'Update Task' : 'Create Task'}
-              </Button>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <Tabs defaultValue="details" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="details">Task Details</TabsTrigger>
+                <TabsTrigger value="image">Image</TabsTrigger>
+                <TabsTrigger value="reward">Reward</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="details" className="space-y-4 py-4">
+                <TaskDetailsFields control={form.control} />
+              </TabsContent>
+              
+              <TabsContent value="image" className="space-y-4 py-4">
+                <ImageUploadField control={form.control} />
+              </TabsContent>
+              
+              <TabsContent value="reward" className="space-y-4 py-4">
+                <RewardFields control={form.control} />
+              </TabsContent>
+            </Tabs>
+
+            <div className="flex justify-end">
+              <Button type="submit">Save Task</Button>
             </div>
           </form>
         </Form>
