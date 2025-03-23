@@ -6,9 +6,7 @@ import { toast } from 'sonner';
 import { CheckSquare, Gift, Award, Plus, Pencil } from 'lucide-react';
 import TaskList from '@/components/TaskList';
 import RewardCard from '@/components/RewardCard';
-import AchievementManager from '@/components/dashboard/AchievementManager';
-import { Task, Reward, User, Achievement } from '@/utils/types';
-import { getAchievementsForChild, updateAchievements } from '@/utils/achievementsData';
+import { Task, Reward, User } from '@/utils/dummyData';
 
 interface ChildTasksProps {
   tasks: Task[];
@@ -27,24 +25,6 @@ const ChildTasks: React.FC<ChildTasksProps> = ({
   onAddReward,
   onEditTask
 }) => {
-  const [achievements, setAchievements] = React.useState<Achievement[]>([]);
-
-  React.useEffect(() => {
-    if (selectedChild) {
-      // Get achievements for the selected child
-      const childAchievements = getAchievementsForChild(selectedChild.id);
-      setAchievements(childAchievements);
-    }
-  }, [selectedChild]);
-
-  const handleUpdateAchievements = (updatedAchievements: Achievement[]) => {
-    if (selectedChild) {
-      setAchievements(updatedAchievements);
-      // Save to the backend/data store
-      updateAchievements(selectedChild.id, updatedAchievements);
-    }
-  };
-
   return (
     <div className="bg-white rounded-lg shadow-subtle">
       <Tabs defaultValue="tasks" className="w-full">
@@ -104,18 +84,11 @@ const ChildTasks: React.FC<ChildTasksProps> = ({
         </TabsContent>
         
         <TabsContent value="achievements" className="p-6 pt-0">
-          {selectedChild ? (
-            <AchievementManager 
-              achievements={achievements}
-              onUpdateAchievements={handleUpdateAchievements}
-            />
-          ) : (
-            <div className="bg-gray-50 p-6 rounded-lg text-center">
-              <p className="text-muted-foreground">
-                Select a child to manage achievements
-              </p>
-            </div>
-          )}
+          <div className="bg-gray-50 p-6 rounded-lg text-center">
+            <p className="text-muted-foreground">
+              Achievement management coming soon!
+            </p>
+          </div>
         </TabsContent>
       </Tabs>
     </div>

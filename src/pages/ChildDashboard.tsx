@@ -10,13 +10,11 @@ import ProfileCustomization from '@/components/ProfileCustomization';
 import { 
   getChildById, 
   getTasksForChild, 
-  getAchievementsForChild,
   setTasksForChild,
   updateUser,
   achievements,
   rewards,
-  User,
-  Achievement
+  User
 } from '@/utils/dummyData';
 import { Button } from '@/components/ui/button';
 import { Gift, Sparkles, CheckSquare, Award, ArrowLeft } from 'lucide-react';
@@ -30,7 +28,6 @@ const ChildDashboard = () => {
   
   const [childData, setChildData] = useState<User | null>(null);
   const [childTasks, setChildTasks] = useState<any[]>([]);
-  const [childAchievements, setChildAchievements] = useState<Achievement[]>([]);
   
   const [claimedRewardIds, setClaimedRewardIds] = useState<string[]>(
     rewards.filter(reward => reward.claimed).map(reward => reward.id)
@@ -40,12 +37,10 @@ const ChildDashboard = () => {
     if (childId) {
       const child = getChildById(childId);
       const tasks = getTasksForChild(childId);
-      const achievements = getAchievementsForChild(childId);
       
       if (child) {
         setChildData(child);
         setChildTasks(tasks);
-        setChildAchievements(achievements);
       } else {
         // Navigate back to parent dashboard if child not found
         navigate('/parent');
@@ -202,13 +197,7 @@ const ChildDashboard = () => {
             >
               <Award size={32} className="text-app-yellow mb-2" />
               <span className="font-bold text-center">My Achievements</span>
-              <span className="text-xs text-muted-foreground">
-                {childData?.totalPoints ? (
-                  `Level ${Math.floor(childData.totalPoints / 100)}`
-                ) : (
-                  'Start earning!'
-                )}
-              </span>
+              <span className="text-xs text-muted-foreground">{achievements.filter(a => a.unlocked).length} earned</span>
             </motion.div>
           </div>
           
@@ -224,7 +213,7 @@ const ChildDashboard = () => {
             
             {/* Right Column */}
             <div className="space-y-6">
-              {childData && <AchievementTracker achievements={childAchievements} user={childData} />}
+              <AchievementTracker achievements={achievements} user={childData} />
               
               <div>
                 <h3 className="text-lg font-medium mb-4">My Rewards</h3>
