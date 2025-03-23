@@ -149,7 +149,7 @@ const ChildDashboard = () => {
             >
               <Award size={32} className="text-app-yellow mb-2" />
               <span className="font-bold text-center">My Achievements</span>
-              <span className="text-xs text-muted-foreground">{achievements.filter(a => a.completed).length} earned</span>
+              <span className="text-xs text-muted-foreground">{achievements.filter(a => a.unlocked).length} earned</span>
             </motion.div>
           </div>
           
