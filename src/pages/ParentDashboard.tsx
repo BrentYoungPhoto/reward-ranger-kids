@@ -56,6 +56,25 @@ const ParentDashboard = () => {
     setChildFormOpen(true);
   };
 
+  const handleDeleteChild = (childId: string) => {
+    // Remove the child from the children array
+    setChildren(prev => prev.filter(child => child.id !== childId));
+    
+    // If the deleted child was selected, select another child
+    if (selectedChildId === childId) {
+      const remainingChildren = children.filter(child => child.id !== childId);
+      if (remainingChildren.length > 0) {
+        setSelectedChildId(remainingChildren[0].id);
+        setChildTasks(getTasksForChild(remainingChildren[0].id));
+      } else {
+        setSelectedChildId('');
+        setChildTasks([]);
+      }
+    }
+    
+    toast.success('Child deleted successfully');
+  };
+
   const handleSaveChild = (childData: Partial<User>) => {
     if (childData.id) {
       // Update existing child
@@ -154,6 +173,7 @@ const ParentDashboard = () => {
                 onSelectChild={handleSelectChild}
                 onAddChild={handleAddChild}
                 onEditChild={handleEditChild}
+                onDeleteChild={handleDeleteChild}
               />
               
               <ChildTasks 
