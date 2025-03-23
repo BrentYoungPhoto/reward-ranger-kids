@@ -1,4 +1,3 @@
-
 import { Star, Book, House, Trash, Backpack, Dog, ShoppingCart } from 'lucide-react';
 
 export interface User {
@@ -8,6 +7,9 @@ export interface User {
   avatar: string;
   age?: number;
   totalPoints?: number;
+  displayName?: string;
+  mood?: string;
+  theme?: string;
 }
 
 export interface Task {
@@ -58,6 +60,9 @@ export const users: User[] = [
     avatar: 'https://i.pravatar.cc/150?img=11',
     age: 9,
     totalPoints: 175,
+    displayName: 'Alex',
+    mood: 'happy',
+    theme: 'default',
   },
   {
     id: '2',
@@ -66,6 +71,9 @@ export const users: User[] = [
     avatar: 'https://i.pravatar.cc/150?img=12',
     age: 11,
     totalPoints: 250,
+    displayName: 'Sammy',
+    mood: 'excited',
+    theme: 'ocean',
   },
   {
     id: '3',

@@ -10,7 +10,19 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
-  const { name, avatar, age, totalPoints } = user;
+  const { name, displayName, avatar, age, totalPoints, mood } = user;
+
+  // Get emoji for the mood
+  const getMoodEmoji = () => {
+    switch (mood) {
+      case 'happy': return '😊';
+      case 'excited': return '🤩';
+      case 'calm': return '😌';
+      case 'tired': return '😴';
+      case 'bored': return '🥱';
+      default: return '😊';
+    }
+  };
 
   return (
     <motion.div 
@@ -18,6 +30,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className="neo-card p-6 relative overflow-hidden"
+      style={{ '--app-blue': 'var(--app-accent-color, #9b87f5)' } as React.CSSProperties}
     >
       <div className="absolute top-0 right-0 w-24 h-24 bg-app-blue/10 rounded-bl-full z-0"></div>
       
@@ -28,18 +41,25 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
         >
           <img
             src={avatar}
-            alt={name}
+            alt={displayName || name}
             className="h-full w-full object-cover"
           />
         </motion.div>
         
         <div className="text-center sm:text-left">
-          <div className="mb-1">
+          <div className="mb-1 flex flex-wrap gap-2 justify-center sm:justify-start">
             <Badge variant="outline" className="bg-app-blue/10 text-app-blue border-none">
               {age ? `${age} years old` : 'Parent'}
             </Badge>
+            
+            {mood && (
+              <Badge variant="outline" className="bg-app-blue/10 text-app-blue border-none">
+                {getMoodEmoji()} {mood.charAt(0).toUpperCase() + mood.slice(1)}
+              </Badge>
+            )}
           </div>
-          <h2 className="text-2xl font-semibold mb-1">{name}</h2>
+          
+          <h2 className="text-2xl font-semibold mb-1">{displayName || name}</h2>
           
           {totalPoints !== undefined && (
             <div className="flex items-center justify-center sm:justify-start gap-2 text-muted-foreground">
