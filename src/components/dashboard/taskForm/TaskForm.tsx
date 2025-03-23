@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
@@ -42,6 +42,26 @@ const TaskForm: React.FC<TaskFormProps> = ({ isOpen, onClose, onSave, task, chil
       imageURL: task?.imageURL || '',
     }
   });
+
+  // Reset form when task changes (especially important for edit mode)
+  useEffect(() => {
+    if (isOpen) {
+      form.reset({
+        title: task?.title || '',
+        description: task?.description || '',
+        assignedTo: task?.assignedTo || children[0]?.id || '',
+        points: task?.points || 10,
+        icon: task?.icon || 'star',
+        recurrence: task?.recurrence || 'none',
+        rewardTitle: task?.reward?.title || '',
+        rewardDescription: task?.reward?.description || '',
+        imageURL: task?.imageURL || '',
+      });
+      
+      setDueDate(task?.dueDate ? new Date(task.dueDate) : new Date());
+      setIncludeReward(!!task?.reward);
+    }
+  }, [task, isOpen, form, children]);
 
   const onSubmit = (data: TaskFormValues) => {
     const formattedDate = dueDate ? format(dueDate, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
