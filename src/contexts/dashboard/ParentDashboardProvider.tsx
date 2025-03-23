@@ -3,6 +3,7 @@ import React, { createContext, useContext } from 'react';
 import { User } from '@/utils/dummyData';
 import { useChildManagement } from './useChildManagement';
 import { useTaskManagement } from './useTaskManagement';
+import { useAchievementManagement } from './useAchievementManagement';
 import { ParentDashboardContextProps, ParentDashboardProviderProps } from './types';
 
 const ParentDashboardContext = createContext<ParentDashboardContextProps | undefined>(undefined);
@@ -45,6 +46,16 @@ export const ParentDashboardProvider: React.FC<ParentDashboardProviderProps> = (
     handleSaveTask
   } = useTaskManagement(initialChildId);
   
+  const {
+    achievements,
+    achievementFormOpen,
+    achievementToEdit,
+    setAchievementFormOpen,
+    handleAddAchievement,
+    handleEditAchievement,
+    handleSaveAchievement
+  } = useAchievementManagement();
+  
   const selectedChild = allChildren.find(child => child.id === selectedChildId);
 
   // Enhanced child handlers that interact with task state
@@ -80,8 +91,11 @@ export const ParentDashboardProvider: React.FC<ParentDashboardProviderProps> = (
     selectedChild,
     childFormOpen,
     taskFormOpen,
+    achievementFormOpen,
     childToEdit,
     taskToEdit,
+    achievementToEdit,
+    achievements,
     handleSelectChild,
     handleAddChild,
     handleEditChild,
@@ -91,8 +105,12 @@ export const ParentDashboardProvider: React.FC<ParentDashboardProviderProps> = (
     handleEditTask,
     handleCompleteTask,
     handleSaveTask,
+    handleAddAchievement,
+    handleEditAchievement,
+    handleSaveAchievement,
     setChildFormOpen,
     setTaskFormOpen,
+    setAchievementFormOpen,
   };
 
   return (

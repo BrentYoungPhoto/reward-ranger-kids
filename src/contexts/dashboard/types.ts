@@ -1,5 +1,5 @@
 
-import { Task, User } from '@/utils/dummyData';
+import { Task, User, Achievement } from '@/utils/dummyData';
 
 export interface ParentDashboardContextProps {
   parent: User | undefined;
@@ -9,8 +9,11 @@ export interface ParentDashboardContextProps {
   selectedChild: User | undefined;
   childFormOpen: boolean;
   taskFormOpen: boolean;
+  achievementFormOpen: boolean;
   childToEdit: User | undefined;
   taskToEdit: Task | undefined;
+  achievementToEdit: Achievement | undefined;
+  achievements: Achievement[];
   handleSelectChild: (childId: string) => void;
   handleAddChild: () => void;
   handleEditChild: (child: User) => void;
@@ -20,8 +23,12 @@ export interface ParentDashboardContextProps {
   handleEditTask: (task: Task) => void;
   handleCompleteTask: (taskId: string) => void;
   handleSaveTask: (taskData: Partial<Task>) => void;
+  handleAddAchievement: () => void;
+  handleEditAchievement: (achievement: Achievement) => void;
+  handleSaveAchievement: (achievementData: Partial<Achievement>) => void;
   setChildFormOpen: (open: boolean) => void;
   setTaskFormOpen: (open: boolean) => void;
+  setAchievementFormOpen: (open: boolean) => void;
 }
 
 export interface ParentDashboardProviderProps {

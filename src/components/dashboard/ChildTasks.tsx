@@ -6,24 +6,31 @@ import { toast } from 'sonner';
 import { CheckSquare, Gift, Award, Plus, Pencil } from 'lucide-react';
 import TaskList from '@/components/TaskList';
 import RewardCard from '@/components/RewardCard';
-import { Task, Reward, User } from '@/utils/dummyData';
+import AchievementLevels from './AchievementLevels';
+import { Task, Reward, User, Achievement } from '@/utils/dummyData';
 
 interface ChildTasksProps {
   tasks: Task[];
   rewards: Reward[];
+  achievements: Achievement[];
   selectedChild: User | undefined;
   onAddTask: () => void;
   onAddReward: () => void;
+  onAddAchievement: () => void;
   onEditTask?: (task: Task) => void;
+  onEditAchievement?: (achievement: Achievement) => void;
 }
 
 const ChildTasks: React.FC<ChildTasksProps> = ({ 
   tasks, 
   rewards, 
+  achievements,
   selectedChild,
   onAddTask,
   onAddReward,
-  onEditTask
+  onAddAchievement,
+  onEditTask,
+  onEditAchievement
 }) => {
   return (
     <div className="bg-white rounded-lg shadow-subtle">
@@ -84,11 +91,25 @@ const ChildTasks: React.FC<ChildTasksProps> = ({
         </TabsContent>
         
         <TabsContent value="achievements" className="p-6 pt-0">
-          <div className="bg-gray-50 p-6 rounded-lg text-center">
-            <p className="text-muted-foreground">
-              Achievement management coming soon!
-            </p>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-medium">Achievement Levels</h3>
+            <Button 
+              size="sm"
+              variant="outline"
+              className="border-app-blue text-app-blue hover:bg-app-blue hover:text-white"
+              onClick={onAddAchievement}
+            >
+              <Pencil size={16} className="mr-1" />
+              Edit Achievements
+            </Button>
           </div>
+          
+          <AchievementLevels 
+            achievements={achievements} 
+            rewards={rewards}
+            selectedChild={selectedChild}
+            onEditAchievement={onEditAchievement || (() => {})}
+          />
         </TabsContent>
       </Tabs>
     </div>

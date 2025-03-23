@@ -1,5 +1,4 @@
-
-import { Star, Book, House, Trash, Backpack, Dog, ShoppingCart, RefreshCw } from 'lucide-react';
+import { Star, Book, House, Trash, Backpack, Dog, ShoppingCart, Trophy, Award, Medal, Badge, Crown, Gift } from 'lucide-react';
 
 export interface User {
   id: string;
@@ -37,6 +36,8 @@ export interface Achievement {
   pointsNeeded: number;
   icon: string;
   unlocked: boolean;
+  rewardId?: string;
+  level: number;
 }
 
 export interface Reward {
@@ -55,7 +56,18 @@ export const icons = {
   backpack: Backpack,
   dog: Dog,
   cart: ShoppingCart,
+  trophy: Trophy,
+  award: Award,
+  medal: Medal,
+  badge: Badge,
+  crown: Crown,
+  gift: Gift,
 };
+
+export const achievementIcons = [
+  '🏆', '🌟', '🚀', '🎖️', '🏅', '🥇', '👑', '💎', '⭐', '🔥', 
+  '✨', '🎯', '🎮', '📚', '🧩', '🎨', '🎭', '🏆', '🌈', '🦸'
+];
 
 // Demo users
 export const users: User[] = [
@@ -177,33 +189,23 @@ let tasksData: Task[] = [
   },
 ];
 
-// Demo achievements
-export const achievements: Achievement[] = [
-  {
-    id: '1',
-    title: 'Task Master',
-    description: 'Complete 5 tasks',
-    pointsNeeded: 100,
-    icon: '🏆',
-    unlocked: true,
-  },
-  {
-    id: '2',
-    title: 'Responsibility Champion',
-    description: 'Complete 10 tasks on time',
-    pointsNeeded: 200,
-    icon: '🌟',
+// Generate 25 achievement levels
+let achievementsData: Achievement[] = [];
+for (let i = 1; i <= 25; i++) {
+  achievementsData.push({
+    id: `achievement-${i}`,
+    title: `Level ${i} Achievement`,
+    description: `Reach ${i * 100} points to unlock this achievement!`,
+    pointsNeeded: i * 100,
+    icon: achievementIcons[Math.min(i - 1, achievementIcons.length - 1)],
     unlocked: false,
-  },
-  {
-    id: '3',
-    title: 'Super Helper',
-    description: 'Earn 300 points total',
-    pointsNeeded: 300,
-    icon: '🚀',
-    unlocked: false,
-  },
-];
+    level: i
+  });
+}
+
+// Add some default unlocked achievements for demo
+achievementsData[0].unlocked = true;
+achievementsData[1].unlocked = true;
 
 // Demo rewards
 export const rewards: Reward[] = [
@@ -266,6 +268,24 @@ export const getChildById = (childId: string) => {
 // Function to get all children
 export const getAllChildren = () => {
   return users.filter(user => user.role === 'child');
+};
+
+// Function to get all achievements
+export const getAllAchievements = () => {
+  return [...achievementsData];
+};
+
+// Function to update achievement data
+export const updateAchievement = (achievementId: string, updates: Partial<Achievement>): Achievement | undefined => {
+  const achievementIndex = achievementsData.findIndex(achievement => achievement.id === achievementId);
+  
+  if (achievementIndex !== -1) {
+    // Update the achievement
+    achievementsData[achievementIndex] = { ...achievementsData[achievementIndex], ...updates };
+    return achievementsData[achievementIndex];
+  }
+  
+  return undefined;
 };
 
 // Function to update user data

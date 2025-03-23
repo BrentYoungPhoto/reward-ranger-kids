@@ -17,12 +17,15 @@ const ParentDashboardLayout: React.FC = () => {
     selectedChildId,
     childTasks,
     selectedChild,
+    achievements,
     handleSelectChild,
     handleAddChild,
     handleEditChild,
     handleDeleteChild,
     handleAddTask,
-    handleEditTask
+    handleEditTask,
+    handleAddAchievement,
+    handleEditAchievement
   } = useParentDashboard();
 
   if (!parent) {
@@ -57,10 +60,13 @@ const ParentDashboardLayout: React.FC = () => {
             <ChildTasks 
               tasks={childTasks}
               rewards={rewards}
+              achievements={achievements}
               selectedChild={selectedChild}
               onAddTask={handleAddTask}
               onAddReward={() => toast.info("Add reward functionality coming soon!")}
+              onAddAchievement={handleAddAchievement}
               onEditTask={handleEditTask}
+              onEditAchievement={handleEditAchievement}
             />
           </div>
           

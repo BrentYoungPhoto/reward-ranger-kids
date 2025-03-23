@@ -1,37 +1,51 @@
 
 import React from 'react';
 import { useParentDashboard } from '@/contexts/ParentDashboardContext';
-import ChildForm from '@/components/dashboard/ChildForm';
-import TaskForm from '@/components/dashboard/taskForm';
+import ChildForm from './ChildForm';
+import TaskForm from './taskForm/TaskForm';
+import AchievementForm from './AchievementForm';
+import { rewards } from '@/utils/dummyData';
 
 const ParentDashboardModals: React.FC = () => {
   const {
-    children,
     childFormOpen,
     taskFormOpen,
+    achievementFormOpen,
     childToEdit,
     taskToEdit,
+    achievementToEdit,
+    children,
+    handleSaveChild,
+    handleSaveTask,
+    handleSaveAchievement,
     setChildFormOpen,
     setTaskFormOpen,
-    handleSaveChild,
-    handleSaveTask
+    setAchievementFormOpen
   } = useParentDashboard();
 
   return (
     <>
       <ChildForm 
-        isOpen={childFormOpen}
+        open={childFormOpen}
+        child={childToEdit}
         onClose={() => setChildFormOpen(false)}
         onSave={handleSaveChild}
-        child={childToEdit}
       />
-
+      
       <TaskForm 
         open={taskFormOpen}
         onClose={() => setTaskFormOpen(false)}
         onSave={handleSaveTask}
         task={taskToEdit}
         children={children}
+      />
+      
+      <AchievementForm
+        open={achievementFormOpen}
+        onClose={() => setAchievementFormOpen(false)}
+        onSave={handleSaveAchievement}
+        achievement={achievementToEdit}
+        rewards={rewards}
       />
     </>
   );
