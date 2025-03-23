@@ -24,7 +24,7 @@ export interface Task {
   points: number;
   completed: boolean;
   dueDate: string;
-  icon: string; // Changed from keyof typeof icons to string
+  icon: keyof typeof icons;
   reward?: Reward;
   recurrence?: RecurrenceType;
   lastCompleted?: string;
