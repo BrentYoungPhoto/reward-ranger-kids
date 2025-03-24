@@ -3,7 +3,7 @@ import React from 'react';
 import { useParentDashboard } from '@/contexts/ParentDashboardContext';
 import ChildForm from './ChildForm';
 import TaskForm from './taskForm/TaskForm';
-import AchievementForm from './AchievementForm';
+import AchievementForm from './achievementForm';
 import { rewards } from '@/utils/dummyData';
 
 const ParentDashboardModals: React.FC = () => {
