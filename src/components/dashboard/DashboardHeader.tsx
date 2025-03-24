@@ -3,7 +3,6 @@ import React, { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Settings } from 'lucide-react';
-import { Switch } from '@/components/ui/switch';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
 
 interface DashboardHeaderProps {
@@ -11,17 +10,13 @@ interface DashboardHeaderProps {
   subtitle?: string;
   className?: string;
   children?: ReactNode;
-  onToggleDarkMode?: () => void;
-  darkMode?: boolean;
 }
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({ 
   title, 
   subtitle,
   className,
-  children,
-  onToggleDarkMode,
-  darkMode
+  children
 }) => {
   return (
     <div className={cn(
@@ -35,33 +30,24 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             {subtitle && <p className="text-gray-500 mt-1">{subtitle}</p>}
           </div>
           <div className="flex items-center gap-4">
-            {onToggleDarkMode && (
-              <Menubar className="border-none bg-transparent">
-                <MenubarMenu>
-                  <MenubarTrigger className="p-2 hover:bg-gray-100 rounded-full">
-                    <Settings className="h-5 w-5 text-gray-500" />
-                  </MenubarTrigger>
-                  <MenubarContent align="end">
-                    <MenubarItem className="flex items-center justify-between cursor-default">
-                      <span>Dark Mode</span>
-                      <Switch
-                        checked={darkMode}
-                        onCheckedChange={onToggleDarkMode}
-                      />
-                    </MenubarItem>
-                    <MenubarItem>
-                      Notification Settings
-                    </MenubarItem>
-                    <MenubarItem>
-                      Account Settings
-                    </MenubarItem>
-                    <MenubarItem>
-                      Help & Support
-                    </MenubarItem>
-                  </MenubarContent>
-                </MenubarMenu>
-              </Menubar>
-            )}
+            <Menubar className="border-none bg-transparent">
+              <MenubarMenu>
+                <MenubarTrigger className="p-2 hover:bg-gray-100 rounded-full">
+                  <Settings className="h-5 w-5 text-gray-500" />
+                </MenubarTrigger>
+                <MenubarContent align="end">
+                  <MenubarItem>
+                    Notification Settings
+                  </MenubarItem>
+                  <MenubarItem>
+                    Account Settings
+                  </MenubarItem>
+                  <MenubarItem>
+                    Help & Support
+                  </MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+            </Menubar>
             {children}
           </div>
         </div>

@@ -10,15 +10,7 @@ import QuickActions from '@/components/dashboard/QuickActions';
 import { rewards } from '@/utils/dummyData';
 import { toast } from 'sonner';
 
-interface ParentDashboardLayoutProps {
-  darkMode?: boolean;
-  onToggleDarkMode?: () => void;
-}
-
-const ParentDashboardLayout: React.FC<ParentDashboardLayoutProps> = ({ 
-  darkMode, 
-  onToggleDarkMode 
-}) => {
+const ParentDashboardLayout: React.FC = () => {
   const {
     parent,
     children,
@@ -44,14 +36,14 @@ const ParentDashboardLayout: React.FC<ParentDashboardLayoutProps> = ({
     );
   }
 
+  const handleOpenSettings = () => {
+    toast.info("Settings functionality coming soon!");
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 pb-10 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 pb-10">
       {/* Header */}
-      <DashboardHeader 
-        title="Parent Dashboard" 
-        darkMode={darkMode}
-        onToggleDarkMode={onToggleDarkMode}
-      />
+      <DashboardHeader title="Parent Dashboard" />
       
       {/* Main Content */}
       <div className="container max-w-5xl mx-auto px-4 sm:px-6 pt-6">
@@ -88,7 +80,7 @@ const ParentDashboardLayout: React.FC<ParentDashboardLayoutProps> = ({
             <QuickActions 
               onAddTask={handleAddTask}
               onAddChild={handleAddChild}
-              onOpenSettings={onToggleDarkMode}
+              onOpenSettings={handleOpenSettings}
             />
           </div>
         </div>

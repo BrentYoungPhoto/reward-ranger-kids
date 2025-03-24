@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import AnimatedPage from '@/components/AnimatedPage';
 import { users } from '@/utils/dummyData';
 import { ParentDashboardProvider } from '@/contexts/ParentDashboardContext';
@@ -9,13 +9,6 @@ import ParentDashboardModals from '@/components/dashboard/ParentDashboardModals'
 const ParentDashboard = () => {
   // For demo purposes, we're using parent with ID 3
   const parent = users.find(user => user.id === '3');
-  const [darkMode, setDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    // Toggle dark class on document element for dark mode styling
-    document.documentElement.classList.toggle('dark');
-  };
 
   if (!parent) {
     return (
@@ -27,12 +20,10 @@ const ParentDashboard = () => {
 
   return (
     <AnimatedPage>
-      <div className={darkMode ? 'dark' : ''}>
-        <ParentDashboardProvider parent={parent}>
-          <ParentDashboardLayout darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
-          <ParentDashboardModals />
-        </ParentDashboardProvider>
-      </div>
+      <ParentDashboardProvider parent={parent}>
+        <ParentDashboardLayout />
+        <ParentDashboardModals />
+      </ParentDashboardProvider>
     </AnimatedPage>
   );
 };
