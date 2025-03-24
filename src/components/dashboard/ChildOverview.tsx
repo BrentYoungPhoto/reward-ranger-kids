@@ -8,6 +8,8 @@ import { Edit, Plus, UserRoundPlus, Trash2, LogIn } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Link } from 'react-router-dom';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
 
 interface ChildOverviewProps {
   children: User[];
@@ -77,65 +79,79 @@ const ChildOverview: React.FC<ChildOverviewProps> = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {children.map(child => (
               <motion.div
                 key={child.id}
                 whileHover={{ scale: 1.02 }}
-                className={`relative flex items-center gap-3 p-4 rounded-lg transition-all border ${
+                className={`overflow-hidden rounded-lg transition-all border shadow-subtle ${
                   selectedChildId === child.id 
-                    ? 'border-app-blue bg-app-blue/5' 
+                    ? 'border-app-blue border-2 bg-app-blue/5' 
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
-                <button 
-                  className="flex items-center gap-3 flex-1 text-left"
+                <div 
+                  className="cursor-pointer"
                   onClick={() => onSelectChild(child.id)}
                 >
-                  <div className="h-10 w-10 rounded-full overflow-hidden">
-                    <img 
-                      src={child.avatar} 
-                      alt={child.name}
-                      className="h-full w-full object-cover" 
-                    />
-                  </div>
-                  <div className="text-left">
-                    <div className="flex items-center gap-1.5">
-                      <h3 className="font-medium">{child.name}</h3>
-                      {child.mood && getMoodEmoji(child.mood) && (
-                        <span title={child.mood} className="text-sm">
-                          {getMoodEmoji(child.mood)}
-                        </span>
-                      )}
+                  {/* Header with avatar, name, and mood */}
+                  <div className="p-4 flex items-center gap-3">
+                    <Avatar className="h-14 w-14 border-2 border-gray-200">
+                      <AvatarImage src={child.avatar} alt={child.name} />
+                      <AvatarFallback>{child.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold text-lg">{child.name}</h3>
+                        {child.mood && getMoodEmoji(child.mood) && (
+                          <span title={`Mood: ${child.mood}`} className="text-xl">
+                            {getMoodEmoji(child.mood)}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
+                        <span className="font-medium text-app-blue">{child.totalPoints} points</span>
+                      </div>
                     </div>
-                    <p className="text-xs text-muted-foreground">{child.totalPoints} points</p>
                   </div>
-                </button>
-                <div className="absolute top-2 right-2 flex gap-1">
-                  <Button 
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7"
-                    asChild
-                  >
-                    <Link to={`/child/${child.id}`} aria-label={`View ${child.name}'s dashboard`}>
-                      <LogIn size={14} className="text-gray-500" />
-                    </Link>
-                  </Button>
-                  <button 
-                    className="p-1.5 bg-white rounded-full shadow-sm border border-gray-200 hover:bg-gray-50"
-                    onClick={() => onEditChild(child)}
-                    aria-label={`Edit ${child.name}`}
-                  >
-                    <Edit size={14} className="text-gray-500" />
-                  </button>
-                  <button 
-                    className="p-1.5 bg-white rounded-full shadow-sm border border-gray-200 hover:bg-destructive hover:text-white hover:border-destructive"
-                    onClick={(e) => handleDeleteClick(child, e)}
-                    aria-label={`Delete ${child.name}`}
-                  >
-                    <Trash2 size={14} className="text-gray-500" />
-                  </button>
+                  
+                  <Separator />
+                  
+                  {/* Action buttons */}
+                  <div className="p-3 bg-gray-50 flex items-center justify-end gap-2">
+                    <Button 
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-2 text-gray-600 hover:text-app-blue hover:bg-app-blue/10"
+                      asChild
+                    >
+                      <Link to={`/child/${child.id}`}>
+                        <LogIn size={16} className="mr-1" />
+                        <span>View Dashboard</span>
+                      </Link>
+                    </Button>
+                    <Button 
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-2 text-gray-600 hover:text-app-blue hover:bg-app-blue/10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEditChild(child);
+                      }}
+                    >
+                      <Edit size={16} className="mr-1" />
+                      <span>Edit</span>
+                    </Button>
+                    <Button 
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-2 text-gray-600 hover:text-destructive hover:bg-destructive/10"
+                      onClick={(e) => handleDeleteClick(child, e)}
+                    >
+                      <Trash2 size={16} className="mr-1" />
+                      <span>Delete</span>
+                    </Button>
+                  </div>
                 </div>
               </motion.div>
             ))}
