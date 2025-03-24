@@ -94,14 +94,14 @@ const ChildOverview: React.FC<ChildOverviewProps> = ({
                   className="cursor-pointer"
                   onClick={() => onSelectChild(child.id)}
                 >
-                  {/* Header with avatar, name, and mood */}
-                  <div className="p-4 flex items-center gap-3">
-                    <Avatar className="h-14 w-14 border-2 border-gray-200">
+                  {/* Profile section with larger avatar above name */}
+                  <div className="p-4 flex flex-col items-center">
+                    <Avatar className="h-24 w-24 border-2 border-gray-200 mb-3">
                       <AvatarImage src={child.avatar} alt={child.name} />
                       <AvatarFallback>{child.name.charAt(0)}</AvatarFallback>
                     </Avatar>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-2">
                         <h3 className="font-semibold text-lg">{child.name}</h3>
                         {child.mood && getMoodEmoji(child.mood) && (
                           <span title={`Mood: ${child.mood}`} className="text-xl">
@@ -109,7 +109,7 @@ const ChildOverview: React.FC<ChildOverviewProps> = ({
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
+                      <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-sm">
                         <span className="font-medium text-app-blue">{child.totalPoints} points</span>
                       </div>
                     </div>
