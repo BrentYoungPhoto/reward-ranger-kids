@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -70,6 +70,20 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
       level: achievement?.level || 1
     }
   });
+
+  // Update form values when achievement changes
+  useEffect(() => {
+    if (achievement) {
+      form.reset({
+        title: achievement.title,
+        description: achievement.description,
+        pointsNeeded: achievement.pointsNeeded,
+        icon: achievement.icon,
+        rewardId: achievement.rewardId || 'none',
+        level: achievement.level
+      });
+    }
+  }, [achievement, form]);
 
   const handleSubmit = (values: AchievementFormValues) => {
     // Convert 'none' to empty string or undefined for the rewardId
@@ -206,7 +220,7 @@ const AchievementForm: React.FC<AchievementFormProps> = ({
                   <FormLabel>Associated Reward (Optional)</FormLabel>
                   <Select 
                     onValueChange={field.onChange} 
-                    defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
