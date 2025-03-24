@@ -7,9 +7,10 @@ import { Plus, Gift, UserRoundPlus, Settings } from 'lucide-react';
 interface QuickActionsProps {
   onAddTask: () => void;
   onAddChild: () => void;
+  onOpenSettings?: () => void;
 }
 
-const QuickActions: React.FC<QuickActionsProps> = ({ onAddTask, onAddChild }) => {
+const QuickActions: React.FC<QuickActionsProps> = ({ onAddTask, onAddChild, onOpenSettings }) => {
   return (
     <Card>
       <CardHeader>
@@ -25,7 +26,11 @@ const QuickActions: React.FC<QuickActionsProps> = ({ onAddTask, onAddChild }) =>
             <UserRoundPlus size={16} className="mr-2" />
             Add New Child
           </Button>
-          <Button variant="outline" className="w-full justify-start">
+          <Button 
+            variant="outline" 
+            className="w-full justify-start"
+            onClick={onOpenSettings}
+          >
             <Settings size={16} className="mr-2" />
             Settings
           </Button>
