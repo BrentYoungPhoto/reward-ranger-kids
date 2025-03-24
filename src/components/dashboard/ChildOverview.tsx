@@ -44,6 +44,18 @@ const ChildOverview: React.FC<ChildOverviewProps> = ({
     }
   };
 
+  // Get emoji for the mood
+  const getMoodEmoji = (mood?: string) => {
+    switch (mood) {
+      case 'happy': return '😊';
+      case 'excited': return '🤩';
+      case 'calm': return '😌';
+      case 'tired': return '😴';
+      case 'bored': return '🥱';
+      default: return null;
+    }
+  };
+
   return (
     <>
       <Card>
@@ -88,7 +100,14 @@ const ChildOverview: React.FC<ChildOverviewProps> = ({
                     />
                   </div>
                   <div className="text-left">
-                    <h3 className="font-medium">{child.name}</h3>
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="font-medium">{child.name}</h3>
+                      {child.mood && getMoodEmoji(child.mood) && (
+                        <span title={child.mood} className="text-sm">
+                          {getMoodEmoji(child.mood)}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-muted-foreground">{child.totalPoints} points</p>
                   </div>
                 </button>

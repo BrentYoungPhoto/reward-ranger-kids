@@ -1,6 +1,6 @@
 
 import { z } from 'zod';
-import { Achievement } from '@/utils/dummyData';
+import { Achievement, Reward } from '@/utils/dummyData';
 
 // Schema for achievement form
 export const achievementFormSchema = z.object({
@@ -19,5 +19,5 @@ export interface AchievementFormProps {
   onClose: () => void;
   onSave: (achievementData: Partial<Achievement>) => void;
   achievement?: Achievement;
-  rewards: Achievement['rewards'];
+  rewards: Reward[];
 }
