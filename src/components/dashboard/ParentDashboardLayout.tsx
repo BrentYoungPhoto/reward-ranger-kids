@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParentDashboard } from '@/contexts/ParentDashboardContext';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
@@ -7,7 +6,7 @@ import ChildOverview from '@/components/dashboard/ChildOverview';
 import ChildTasks from '@/components/dashboard/ChildTasks';
 import ActivitySummary from '@/components/dashboard/ActivitySummary';
 import QuickActions from '@/components/dashboard/QuickActions';
-import { rewards } from '@/utils/dummyData';
+import { rewards, updateUser } from '@/utils/dummyData';
 import { toast } from 'sonner';
 import ProfileCustomization from '@/components/ProfileCustomization';
 
@@ -43,7 +42,8 @@ const ParentDashboardLayout: React.FC = () => {
   };
   
   const handleUpdateProfile = (updates: Partial<typeof parent>) => {
-    // In a real app, this would update the user profile in the backend
+    // Update the parent user object with the updates
+    updateUser(parent.id, updates);
     toast.success("Profile updated successfully!");
     console.log("Profile updates:", updates);
   };

@@ -51,7 +51,7 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
       displayName,
       mood,
       theme,
-      avatar: avatarUrl
+      avatar: avatarUrl,
     };
     
     if (email) {

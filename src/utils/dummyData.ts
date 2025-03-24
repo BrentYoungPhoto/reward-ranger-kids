@@ -10,6 +10,7 @@ export interface User {
   displayName?: string;
   mood?: string;
   theme?: string;
+  email?: string;
 }
 
 export type RecurrenceType = 'none' | 'daily' | 'weekly' | 'monthly';
@@ -69,7 +70,6 @@ export const achievementIcons = [
   '✨', '🎯', '🎮', '📚', '🧩', '🎨', '🎭', '🏆', '🌈', '🦸'
 ];
 
-// Demo users
 export const users: User[] = [
   {
     id: '1',
@@ -98,10 +98,10 @@ export const users: User[] = [
     name: 'Parent Johnson',
     role: 'parent',
     avatar: 'https://i.pravatar.cc/150?img=33',
+    email: 'parent@example.com',
   },
 ];
 
-// Keep a mutable copy of tasks that can be updated
 let tasksData: Task[] = [
   {
     id: '1',
@@ -189,7 +189,6 @@ let tasksData: Task[] = [
   },
 ];
 
-// Generate 25 achievement levels
 let achievementsData: Achievement[] = [];
 for (let i = 1; i <= 25; i++) {
   achievementsData.push({
@@ -203,14 +202,11 @@ for (let i = 1; i <= 25; i++) {
   });
 }
 
-// Add some default unlocked achievements for demo
 achievementsData[0].unlocked = true;
 achievementsData[1].unlocked = true;
 
-// Export the achievements data for use in components
 export const achievements = achievementsData;
 
-// Demo rewards
 export const rewards: Reward[] = [
   {
     id: '1',
@@ -249,41 +245,32 @@ export const rewards: Reward[] = [
   },
 ];
 
-// Function to get tasks for a specific child
 export const getTasksForChild = (childId: string): Task[] => {
   return tasksData.filter(task => task.assignedTo === childId);
 };
 
-// Function to update tasks for a specific child
 export const setTasksForChild = (childId: string, tasks: Task[]): Task[] => {
-  // Remove all tasks for this child
   tasksData = tasksData.filter(task => task.assignedTo !== childId);
-  // Add the updated tasks
   tasksData = [...tasksData, ...tasks];
   return tasks;
 };
 
-// Function to get a child by ID
 export const getChildById = (childId: string) => {
   return users.find(user => user.id === childId && user.role === 'child');
 };
 
-// Function to get all children
 export const getAllChildren = () => {
   return users.filter(user => user.role === 'child');
 };
 
-// Function to get all achievements
 export const getAllAchievements = () => {
   return [...achievementsData];
 };
 
-// Function to update achievement data
 export const updateAchievement = (achievementId: string, updates: Partial<Achievement>): Achievement | undefined => {
   const achievementIndex = achievementsData.findIndex(achievement => achievement.id === achievementId);
   
   if (achievementIndex !== -1) {
-    // Update the achievement
     achievementsData[achievementIndex] = { ...achievementsData[achievementIndex], ...updates };
     return achievementsData[achievementIndex];
   }
@@ -291,12 +278,10 @@ export const updateAchievement = (achievementId: string, updates: Partial<Achiev
   return undefined;
 };
 
-// Function to update user data
 export const updateUser = (userId: string, updates: Partial<User>): User | undefined => {
   const userIndex = users.findIndex(user => user.id === userId);
   
   if (userIndex !== -1) {
-    // Update the user
     users[userIndex] = { ...users[userIndex], ...updates };
     return users[userIndex];
   }
