@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Index from "./pages/Index";
 import ChildDashboard from "./pages/ChildDashboard";
 import ParentDashboard from "./pages/ParentDashboard";
@@ -16,6 +16,14 @@ const App = () => {
   const [queryClient] = useState(() => new QueryClient());
   // This would be handled by real auth in a production app
   const [isParentLoggedIn, setIsParentLoggedIn] = useState(false);
+
+  // Check for saved dark mode preference when app loads
+  useEffect(() => {
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
