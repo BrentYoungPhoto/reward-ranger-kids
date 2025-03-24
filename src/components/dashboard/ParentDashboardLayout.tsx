@@ -36,10 +36,6 @@ const ParentDashboardLayout: React.FC = () => {
       </div>
     );
   }
-
-  const handleOpenSettings = () => {
-    toast.info("Settings functionality coming soon!");
-  };
   
   const handleOpenProfileSettings = () => {
     // Programmatically trigger the profile customization dialog
@@ -95,7 +91,7 @@ const ParentDashboardLayout: React.FC = () => {
             <QuickActions 
               onAddTask={handleAddTask}
               onAddChild={handleAddChild}
-              onOpenSettings={handleOpenSettings}
+              onOpenSettings={handleOpenProfileSettings}
             />
           </div>
         </div>
