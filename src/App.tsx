@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import Index from "./pages/Index";
 import ChildDashboard from "./pages/ChildDashboard";
 import ParentDashboard from "./pages/ParentDashboard";
@@ -19,41 +20,43 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AnimatePresence mode="wait">
-            <Routes>
-              <Route 
-                path="/" 
-                element={
-                  isParentLoggedIn ? 
-                    <Navigate to="/parent" replace /> : 
-                    <Index onLogin={() => setIsParentLoggedIn(true)} />
-                } 
-              />
-              <Route 
-                path="/child/:childId" 
-                element={
-                  isParentLoggedIn ? 
-                    <ChildDashboard /> : 
-                    <Navigate to="/" replace />
-                } 
-              />
-              <Route 
-                path="/parent" 
-                element={
-                  isParentLoggedIn ? 
-                    <ParentDashboard /> : 
-                    <Navigate to="/" replace />
-                } 
-              />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AnimatePresence>
-        </BrowserRouter>
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AnimatePresence mode="wait">
+              <Routes>
+                <Route 
+                  path="/" 
+                  element={
+                    isParentLoggedIn ? 
+                      <Navigate to="/parent" replace /> : 
+                      <Index onLogin={() => setIsParentLoggedIn(true)} />
+                  } 
+                />
+                <Route 
+                  path="/child/:childId" 
+                  element={
+                    isParentLoggedIn ? 
+                      <ChildDashboard /> : 
+                      <Navigate to="/" replace />
+                  } 
+                />
+                <Route 
+                  path="/parent" 
+                  element={
+                    isParentLoggedIn ? 
+                      <ParentDashboard /> : 
+                      <Navigate to="/" replace />
+                  } 
+                />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AnimatePresence>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

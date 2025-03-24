@@ -1,32 +1,19 @@
 
-import React, { ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import React from 'react';
+import SettingsMenu from './SettingsMenu';
 
 interface DashboardHeaderProps {
   title: string;
-  subtitle?: string;
-  className?: string;
-  children?: ReactNode;
+  userId?: string;
 }
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({ 
-  title, 
-  subtitle,
-  className,
-  children
-}) => {
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({ title, userId = '0' }) => {
   return (
-    <div className={cn(
-      "bg-white border-b border-gray-200 shadow-sm",
-      className
-    )}>
-      <div className="container max-w-5xl mx-auto px-4 sm:px-6 py-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-            {subtitle && <p className="text-gray-500 mt-1">{subtitle}</p>}
-          </div>
-          {children}
+    <div className="bg-white dark:bg-gray-800 shadow-sm border-b sticky top-0 z-10">
+      <div className="container max-w-5xl mx-auto px-4 sm:px-6 py-3">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{title}</h1>
+          {userId && <SettingsMenu userId={userId} />}
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -80,11 +81,11 @@
 
 @layer components {
   .neo-card {
-    @apply bg-white rounded-xl shadow-md border border-gray-100;
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700;
   }
   
   .shadow-subtle {
-    @apply shadow-[0_2px_10px_rgba(0,0,0,0.05)];
+    @apply shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.2)];
   }
 
   .gradient-background {
@@ -140,4 +141,37 @@
 
 .bg-gradient-candy {
   background: var(--gradient-candy);
+}
+
+/* Dark mode specific overrides */
+.dark .card,
+.dark .neo-card {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .bg-white {
+  @apply bg-gray-800;
+}
+
+.dark .border-gray-100,
+.dark .border-gray-200 {
+  @apply border-gray-700;
+}
+
+.dark .text-gray-700,
+.dark .text-gray-900 {
+  @apply text-gray-200;
+}
+
+.dark .text-gray-500,
+.dark .text-gray-600 {
+  @apply text-gray-400;
+}
+
+.dark .bg-gray-50 {
+  @apply bg-gray-900;
+}
+
+.dark .bg-gray-100 {
+  @apply bg-gray-800;
 }
