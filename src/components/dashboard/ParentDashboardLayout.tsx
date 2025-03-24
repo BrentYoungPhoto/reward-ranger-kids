@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParentDashboard } from '@/contexts/ParentDashboardContext';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import ProfileCard from '@/components/ProfileCard';
@@ -29,6 +29,16 @@ const ParentDashboardLayout: React.FC = () => {
     handleEditAchievement
   } = useParentDashboard();
 
+  // Local parent state to handle profile updates
+  const [localParent, setLocalParent] = useState(parent);
+
+  // Update local state when parent from context changes
+  useEffect(() => {
+    if (parent) {
+      setLocalParent(parent);
+    }
+  }, [parent]);
+
   if (!parent) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -44,9 +54,15 @@ const ParentDashboardLayout: React.FC = () => {
   
   const handleUpdateProfile = (updates: Partial<typeof parent>) => {
     // Update the parent user object with the updates
-    updateUser(parent.id, updates);
-    toast.success("Profile updated successfully!");
-    console.log("Profile updates:", updates);
+    const updatedUser = updateUser(parent.id, updates);
+    
+    if (updatedUser) {
+      setLocalParent(updatedUser);
+      toast.success("Profile updated successfully!");
+      console.log("Profile updates:", updates);
+    } else {
+      toast.error("Failed to update profile");
+    }
   };
 
   return (
@@ -62,7 +78,7 @@ const ParentDashboardLayout: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Left Column */}
           <div className="md:col-span-2 space-y-6">
-            <ProfileCard user={parent} />
+            <ProfileCard user={localParent} />
             
             <ChildOverview 
               children={children}
@@ -100,7 +116,7 @@ const ParentDashboardLayout: React.FC = () => {
       
       {/* Profile Customization Dialog */}
       <ProfileCustomization 
-        user={parent} 
+        user={localParent} 
         onUpdateProfile={handleUpdateProfile}
       />
     </div>
