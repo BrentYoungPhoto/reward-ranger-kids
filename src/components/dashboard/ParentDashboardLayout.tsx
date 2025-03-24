@@ -37,9 +37,9 @@ const ParentDashboardLayout: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-10">
+    <div className="min-h-screen bg-gray-50 pb-10">
       {/* Header */}
-      <DashboardHeader title="Parent Dashboard" userId={parent.id} />
+      <DashboardHeader title="Parent Dashboard" />
       
       {/* Main Content */}
       <div className="container max-w-5xl mx-auto px-4 sm:px-6 pt-6">
