@@ -117,12 +117,12 @@ const ChildOverview: React.FC<ChildOverviewProps> = ({
                   
                   <Separator />
                   
-                  {/* Action buttons - Restructured to put View Dashboard on separate line */}
-                  <div className="p-3 bg-gray-50 flex flex-col gap-2">
+                  {/* View Dashboard button with centered text and different background */}
+                  <div className="p-3 bg-app-blue/5 flex justify-center">
                     <Button 
                       variant="ghost"
                       size="sm"
-                      className="h-8 w-full justify-start text-gray-600 hover:text-app-blue hover:bg-app-blue/10"
+                      className="h-8 justify-center text-app-blue hover:text-white hover:bg-app-blue"
                       asChild
                     >
                       <Link to={`/child/${child.id}`}>
@@ -130,29 +130,31 @@ const ChildOverview: React.FC<ChildOverviewProps> = ({
                         <span>View Dashboard</span>
                       </Link>
                     </Button>
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 flex-1 text-gray-600 hover:text-app-blue hover:bg-app-blue/10"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onEditChild(child);
-                        }}
-                      >
-                        <Edit size={16} className="mr-1" />
-                        <span>Edit</span>
-                      </Button>
-                      <Button 
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 flex-1 text-gray-600 hover:text-destructive hover:bg-destructive/10"
-                        onClick={(e) => handleDeleteClick(child, e)}
-                      >
-                        <Trash2 size={16} className="mr-1" />
-                        <span>Delete</span>
-                      </Button>
-                    </div>
+                  </div>
+                  
+                  {/* Edit and Delete buttons */}
+                  <div className="p-3 bg-gray-50 flex gap-2">
+                    <Button 
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 flex-1 text-gray-600 hover:text-app-blue hover:bg-app-blue/10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEditChild(child);
+                      }}
+                    >
+                      <Edit size={16} className="mr-1" />
+                      <span>Edit</span>
+                    </Button>
+                    <Button 
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 flex-1 text-gray-600 hover:text-destructive hover:bg-destructive/10"
+                      onClick={(e) => handleDeleteClick(child, e)}
+                    >
+                      <Trash2 size={16} className="mr-1" />
+                      <span>Delete</span>
+                    </Button>
                   </div>
                 </div>
               </motion.div>
