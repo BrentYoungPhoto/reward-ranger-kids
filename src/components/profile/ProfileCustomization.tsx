@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Palette, User, Lock } from 'lucide-react';
+import { Palette, Image, User, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { User as UserType } from '@/utils/dummyData';
@@ -9,7 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ProfileTab from './ProfileTab';
 import AppearanceTab from './AppearanceTab';
 import AccountTab from './AccountTab';
-import { toast } from 'sonner';
 
 interface ProfileCustomizationProps {
   user: UserType;
@@ -48,18 +47,18 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
   
   const handlePasswordChange = () => {
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match!");
+      alert("Passwords do not match!");
       return;
     }
     
     if (!currentPassword) {
-      toast.error("Please enter your current password");
+      alert("Please enter your current password");
       return;
     }
     
     // In a real app, this would validate the current password
     // and update to the new password in the backend
-    toast.success("Password updated successfully!");
+    alert("Password updated successfully!");
     setCurrentPassword('');
     setNewPassword('');
     setConfirmPassword('');
@@ -74,16 +73,6 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
       setAvatarUrl(url);
     }
   };
-
-  // Update local state when user prop changes
-  React.useEffect(() => {
-    setName(user.name);
-    setDisplayName(user.displayName || user.name);
-    setEmail(user.email || '');
-    setMood(user.mood || 'happy');
-    setTheme(user.theme || 'default');
-    setAvatarUrl(user.avatar);
-  }, [user]);
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

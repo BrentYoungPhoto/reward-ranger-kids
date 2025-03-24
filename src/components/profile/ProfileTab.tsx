@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, User, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { Mail, User, Sparkles } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -39,7 +39,7 @@ const ProfileTab: React.FC<ProfileTabProps> = ({
             <AvatarFallback>{displayName.substring(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
           <label htmlFor="avatar-upload" className="absolute -bottom-2 -right-2 bg-background rounded-full p-2 border-2 border-app-blue cursor-pointer shadow-md">
-            <ImageIcon size={20} className="text-app-blue" />
+            <Image size={20} className="text-app-blue" />
             <input 
               id="avatar-upload" 
               type="file" 
