@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParentDashboard } from '@/contexts/ParentDashboardContext';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
@@ -8,7 +9,7 @@ import ActivitySummary from '@/components/dashboard/ActivitySummary';
 import QuickActions from '@/components/dashboard/QuickActions';
 import { rewards, updateUser } from '@/utils/dummyData';
 import { toast } from 'sonner';
-import ProfileCustomization from '@/components/ProfileCustomization';
+import ProfileCustomization from '@/components/profile/ProfileCustomization';
 
 const ParentDashboardLayout: React.FC = () => {
   const {
