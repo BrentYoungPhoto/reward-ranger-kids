@@ -9,6 +9,7 @@ import ActivitySummary from '@/components/dashboard/ActivitySummary';
 import QuickActions from '@/components/dashboard/QuickActions';
 import { rewards } from '@/utils/dummyData';
 import { toast } from 'sonner';
+import ProfileCustomization from '@/components/ProfileCustomization';
 
 const ParentDashboardLayout: React.FC = () => {
   const {
@@ -39,11 +40,25 @@ const ParentDashboardLayout: React.FC = () => {
   const handleOpenSettings = () => {
     toast.info("Settings functionality coming soon!");
   };
+  
+  const handleOpenProfileSettings = () => {
+    // Programmatically trigger the profile customization dialog
+    document.getElementById('profile-customization-dialog')?.click();
+  };
+  
+  const handleUpdateProfile = (updates: Partial<typeof parent>) => {
+    // In a real app, this would update the user profile in the backend
+    toast.success("Profile updated successfully!");
+    console.log("Profile updates:", updates);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 pb-10">
       {/* Header */}
-      <DashboardHeader title="Parent Dashboard" />
+      <DashboardHeader 
+        title="Parent Dashboard" 
+        onOpenProfileSettings={handleOpenProfileSettings}
+      />
       
       {/* Main Content */}
       <div className="container max-w-5xl mx-auto px-4 sm:px-6 pt-6">
@@ -85,6 +100,12 @@ const ParentDashboardLayout: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {/* Profile Customization Dialog */}
+      <ProfileCustomization 
+        user={parent} 
+        onUpdateProfile={handleUpdateProfile}
+      />
     </div>
   );
 };

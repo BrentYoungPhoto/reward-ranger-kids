@@ -2,7 +2,7 @@
 import React, { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Settings } from 'lucide-react';
+import { Settings, User } from 'lucide-react';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
 
 interface DashboardHeaderProps {
@@ -10,13 +10,15 @@ interface DashboardHeaderProps {
   subtitle?: string;
   className?: string;
   children?: ReactNode;
+  onOpenProfileSettings?: () => void;
 }
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({ 
   title, 
   subtitle,
   className,
-  children
+  children,
+  onOpenProfileSettings
 }) => {
   return (
     <div className={cn(
@@ -36,6 +38,10 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
                   <Settings className="h-5 w-5 text-gray-500" />
                 </MenubarTrigger>
                 <MenubarContent align="end">
+                  <MenubarItem onClick={onOpenProfileSettings}>
+                    <User className="mr-2 h-4 w-4" />
+                    Profile Settings
+                  </MenubarItem>
                   <MenubarItem>
                     Notification Settings
                   </MenubarItem>

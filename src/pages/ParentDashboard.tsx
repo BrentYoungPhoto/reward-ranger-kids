@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import AnimatedPage from '@/components/AnimatedPage';
 import { users } from '@/utils/dummyData';
 import { ParentDashboardProvider } from '@/contexts/ParentDashboardContext';
@@ -8,7 +8,10 @@ import ParentDashboardModals from '@/components/dashboard/ParentDashboardModals'
 
 const ParentDashboard = () => {
   // For demo purposes, we're using parent with ID 3
-  const parent = users.find(user => user.id === '3');
+  const [parent, setParent] = useState(() => {
+    const foundParent = users.find(user => user.id === '3');
+    return foundParent || null;
+  });
 
   if (!parent) {
     return (
@@ -17,6 +20,13 @@ const ParentDashboard = () => {
       </div>
     );
   }
+
+  const handleUpdateParent = (updates: Partial<typeof parent>) => {
+    setParent(prev => ({
+      ...prev,
+      ...updates
+    }));
+  };
 
   return (
     <AnimatedPage>
