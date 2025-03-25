@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParentDashboard } from '@/contexts/ParentDashboardContext';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import ProfileCard from '@/components/ProfileCard';
@@ -29,7 +29,17 @@ const ParentDashboardLayout: React.FC = () => {
     handleEditAchievement
   } = useParentDashboard();
 
-  if (!parent) {
+  // Local state to track parent updates
+  const [updatedParent, setUpdatedParent] = useState(parent);
+
+  // Update local state when parent changes from context
+  useEffect(() => {
+    if (parent) {
+      setUpdatedParent(parent);
+    }
+  }, [parent]);
+
+  if (!updatedParent) {
     return (
       <div className="flex items-center justify-center h-screen">
         <p>Parent not found</p>
@@ -42,11 +52,14 @@ const ParentDashboardLayout: React.FC = () => {
     document.getElementById('profile-customization-dialog')?.click();
   };
   
-  const handleUpdateProfile = (updates: Partial<typeof parent>) => {
+  const handleUpdateProfile = (updates: Partial<typeof updatedParent>) => {
     // Update the parent user object with the updates
-    updateUser(parent.id, updates);
-    toast.success("Profile updated successfully!");
-    console.log("Profile updates:", updates);
+    const updated = updateUser(updatedParent.id, updates);
+    if (updated) {
+      setUpdatedParent(updated);
+      toast.success("Profile updated successfully!");
+      console.log("Profile updates:", updates);
+    }
   };
 
   return (
@@ -62,7 +75,7 @@ const ParentDashboardLayout: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Left Column */}
           <div className="md:col-span-2 space-y-6">
-            <ProfileCard user={parent} />
+            <ProfileCard user={updatedParent} />
             
             <ChildOverview 
               children={children}
@@ -100,7 +113,7 @@ const ParentDashboardLayout: React.FC = () => {
       
       {/* Profile Customization Dialog */}
       <ProfileCustomization 
-        user={parent} 
+        user={updatedParent} 
         onUpdateProfile={handleUpdateProfile}
       />
     </div>

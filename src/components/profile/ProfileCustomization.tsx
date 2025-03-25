@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Palette, Image, User, Lock } from 'lucide-react';
+import { Palette, Image as ImageIcon, User, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { User as UserType } from '@/utils/dummyData';
@@ -27,6 +27,16 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
   const [avatarUrl, setAvatarUrl] = useState(user.avatar);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
+
+  // Update local state when the user prop changes
+  useEffect(() => {
+    setDisplayName(user.displayName || user.name);
+    setName(user.name);
+    setEmail(user.email || '');
+    setMood(user.mood || 'happy');
+    setTheme(user.theme || 'default');
+    setAvatarUrl(user.avatar);
+  }, [user]);
 
   const handleSaveChanges = () => {
     const updates: Partial<UserType> = {
