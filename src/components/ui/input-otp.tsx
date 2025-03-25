@@ -35,12 +35,20 @@ const InputOTPSlot = React.forwardRef<
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext)
   
-  // Define the slot with type assertion to avoid TypeScript errors
-  // and provide fallback values when properties don't exist
-  const slot = inputOTPContext?.slots?.[index] || {};
-  const char = slot.hasOwnProperty('char') ? slot.char : '';
-  const hasFakeCaret = slot.hasOwnProperty('hasFakeCaret') ? slot.hasFakeCaret : false;
-  const isActive = slot.hasOwnProperty('isActive') ? slot.isActive : false;
+  // Define a type for the slot properties
+  type SlotType = {
+    char?: string;
+    hasFakeCaret?: boolean;
+    isActive?: boolean;
+  }
+  
+  // Use the defined type for the slot
+  const slot = (inputOTPContext?.slots?.[index] || {}) as SlotType;
+  
+  // Safely access properties with defaults
+  const char = slot.char || '';
+  const hasFakeCaret = slot.hasFakeCaret || false;
+  const isActive = slot.isActive || false;
 
   return (
     <div
