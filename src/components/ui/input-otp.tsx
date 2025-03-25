@@ -35,41 +35,27 @@ const InputOTPSlot = React.forwardRef<
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext)
 
-  if (!inputOTPContext || !inputOTPContext.slots || !inputOTPContext.slots[index]) {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
-          "bg-white",
-          className
-        )}
-        {...props}
-      >
-        <span className="text-gray-500">?</span>
-      </div>
-    )
-  }
+  const slot = inputOTPContext?.slots?.[index]
   
-  const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]
-
   return (
     <div
       ref={ref}
       className={cn(
         "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
         "bg-white",
-        isActive && "z-10 ring-2 ring-ring ring-offset-background",
+        slot?.isActive && "z-10 ring-2 ring-ring ring-offset-background",
         className
       )}
       {...props}
     >
-      {char ? (
-        <span className="text-black font-bold text-xl">{char}</span>
+      {!inputOTPContext || !slot ? (
+        <span className="text-gray-500">?</span>
+      ) : slot.char ? (
+        <span className="text-black font-bold text-xl">{slot.char}</span>
       ) : (
         <span className="text-gray-400">{index}</span>
       )}
-      {hasFakeCaret && (
+      {slot?.hasFakeCaret && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
         </div>

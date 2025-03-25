@@ -91,7 +91,6 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
         </CardHeader>
         
         <CardContent className="space-y-6">
-          {/* Simple PIN input - direct implementation */}
           <div className="flex justify-center gap-2">
             <InputOTP
               key={resetKey}
@@ -112,7 +111,7 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
             <p className="text-center text-red-500 text-sm font-medium">{error}</p>
           )}
           
-          {/* Debug display to ensure PIN is captured */}
+          {/* Debug display for PIN state */}
           <div className="text-xs text-gray-500 text-center">
             Current PIN state: {pin || "(empty)"}
           </div>
