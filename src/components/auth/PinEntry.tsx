@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   InputOTP, 
   InputOTPGroup, 
@@ -23,9 +23,16 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
   const [error, setError] = useState("");
   const requiredLength = 4;
 
+  // Log when component mounts
+  useEffect(() => {
+    console.log("PinEntry component mounted");
+  }, []);
+
   const handleVerify = () => {
     // In a real app, you would verify with the backend
     // For our demo, we'll compare with the user's pin in dummyData
+    console.log("Verifying PIN:", pin, "against user PIN:", user.pin);
+    
     if (pin === user.pin) {
       setError("");
       onPinVerified();
@@ -36,14 +43,13 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
   };
 
   const handlePinChange = (value: string) => {
+    console.log("PIN input changed to:", value);
     setPin(value);
+    
     // Clear error when user starts typing again
     if (error) {
       setError("");
     }
-
-    // Add console log to debug
-    console.log("PIN changed:", value);
   };
 
   return (
@@ -92,7 +98,7 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
                       key={index} 
                       {...slot} 
                       index={index} 
-                      className="border-2 border-gray-300 focus:border-app-blue bg-white"
+                      className="border-2 border-gray-300 focus:border-app-blue"
                     />
                   ))}
                 </InputOTPGroup>

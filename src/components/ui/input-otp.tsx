@@ -36,21 +36,32 @@ const InputOTPSlot = React.forwardRef<
   const inputOTPContext = React.useContext(OTPInputContext)
   const slot = inputOTPContext?.slots?.[index]
 
+  React.useEffect(() => {
+    if (slot?.char) {
+      console.log(`Slot ${index} has character: ${slot.char}`);
+    }
+  }, [slot?.char, index]);
+
   return (
     <div
       ref={ref}
       className={cn(
         "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
-        "bg-white", // Ensure white background
+        "bg-white shadow-sm", // Added shadow for better visibility
         slot?.isActive && "z-10 ring-2 ring-ring ring-offset-background",
         className
       )}
       {...props}
     >
       {slot?.char ? (
-        <span className="text-black font-bold text-2xl" style={{ color: "#000" }}>
-          {slot.char}
-        </span>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span 
+            className="text-black font-bold text-2xl" 
+            style={{ color: "#000", userSelect: "none" }}
+          >
+            {slot.char}
+          </span>
+        </div>
       ) : (
         <span className="text-gray-400 font-bold text-xl">•</span>
       )}
