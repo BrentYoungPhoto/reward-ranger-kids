@@ -1,14 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Palette, Image as ImageIcon, User, Lock } from 'lucide-react';
+import { Palette, Image as ImageIcon, User, Lock, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { User as UserType } from '@/utils/dummyData';
+import { User as UserType, getAllChildren } from '@/utils/dummyData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ProfileTab from './ProfileTab';
 import AppearanceTab from './AppearanceTab';
 import AccountTab from './AccountTab';
+import PinManagement from './PinManagement';
 
 interface ProfileCustomizationProps {
   user: UserType;
@@ -27,6 +28,7 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
   const [avatarUrl, setAvatarUrl] = useState(user.avatar);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
+  const [children, setChildren] = useState(getAllChildren());
 
   // Update local state when the user prop changes
   useEffect(() => {
@@ -96,7 +98,7 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
         </DialogHeader>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-3 mb-6">
+          <TabsList className="grid grid-cols-4 mb-6">
             <TabsTrigger value="profile">
               <User className="mr-2 h-4 w-4" />
               Profile
@@ -104,6 +106,10 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
             <TabsTrigger value="appearance">
               <Palette className="mr-2 h-4 w-4" />
               Appearance
+            </TabsTrigger>
+            <TabsTrigger value="security">
+              <Shield className="mr-2 h-4 w-4" />
+              Security
             </TabsTrigger>
             <TabsTrigger value="account">
               <Lock className="mr-2 h-4 w-4" />
@@ -131,6 +137,14 @@ const ProfileCustomization: React.FC<ProfileCustomizationProps> = ({ user, onUpd
               theme={theme}
               onMoodChange={setMood}
               onThemeChange={setTheme}
+            />
+          </TabsContent>
+          
+          <TabsContent value="security">
+            <PinManagement 
+              parent={user}
+              children={children}
+              onUpdateParent={onUpdateProfile}
             />
           </TabsContent>
           

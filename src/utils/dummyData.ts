@@ -11,6 +11,7 @@ export interface User {
   mood?: string;
   theme?: string;
   email?: string;
+  pin?: string;
 }
 
 export type RecurrenceType = 'none' | 'daily' | 'weekly' | 'monthly';
@@ -81,6 +82,7 @@ export const users: User[] = [
     displayName: 'Alex',
     mood: 'happy',
     theme: 'default',
+    pin: '1234',
   },
   {
     id: '2',
@@ -92,6 +94,7 @@ export const users: User[] = [
     displayName: 'Sammy',
     mood: 'excited',
     theme: 'ocean',
+    pin: '5678',
   },
   {
     id: '3',
@@ -99,6 +102,7 @@ export const users: User[] = [
     role: 'parent',
     avatar: 'https://i.pravatar.cc/150?img=33',
     email: 'parent@example.com',
+    pin: '0000',
   },
 ];
 
@@ -283,6 +287,27 @@ export const updateUser = (userId: string, updates: Partial<User>): User | undef
   
   if (userIndex !== -1) {
     users[userIndex] = { ...users[userIndex], ...updates };
+    return users[userIndex];
+  }
+  
+  return undefined;
+};
+
+export const authenticateUser = (email: string, password: string): User | null => {
+  const user = users.find(user => user.email === email && user.role === 'parent');
+  return user || null;
+};
+
+export const verifyPin = (userId: string, pin: string): boolean => {
+  const user = users.find(user => user.id === userId);
+  return user?.pin === pin;
+};
+
+export const updateUserPin = (userId: string, pin: string): User | undefined => {
+  const userIndex = users.findIndex(user => user.id === userId);
+  
+  if (userIndex !== -1) {
+    users[userIndex] = { ...users[userIndex], pin };
     return users[userIndex];
   }
   

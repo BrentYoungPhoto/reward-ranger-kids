@@ -10,12 +10,13 @@ import Index from "./pages/Index";
 import ChildDashboard from "./pages/ChildDashboard";
 import ParentDashboard from "./pages/ParentDashboard";
 import NotFound from "./pages/NotFound";
+import { User } from "./utils/dummyData";
 
 const App = () => {
   // Move QueryClient initialization inside the component
   const [queryClient] = useState(() => new QueryClient());
-  // This would be handled by real auth in a production app
-  const [isParentLoggedIn, setIsParentLoggedIn] = useState(false);
+  // State to track the authenticated user
+  const [authenticatedUser, setAuthenticatedUser] = useState<User | null>(null);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -28,15 +29,18 @@ const App = () => {
               <Route 
                 path="/" 
                 element={
-                  isParentLoggedIn ? 
-                    <Navigate to="/parent" replace /> : 
-                    <Index onLogin={() => setIsParentLoggedIn(true)} />
+                  authenticatedUser ? 
+                    (authenticatedUser.role === 'parent' ? 
+                      <Navigate to="/parent" replace /> : 
+                      <Navigate to={`/child/${authenticatedUser.id}`} replace />
+                    ) : 
+                    <Index onLogin={setAuthenticatedUser} />
                 } 
               />
               <Route 
                 path="/child/:childId" 
                 element={
-                  isParentLoggedIn ? 
+                  authenticatedUser ? 
                     <ChildDashboard /> : 
                     <Navigate to="/" replace />
                 } 
@@ -44,7 +48,7 @@ const App = () => {
               <Route 
                 path="/parent" 
                 element={
-                  isParentLoggedIn ? 
+                  authenticatedUser?.role === 'parent' ? 
                     <ParentDashboard /> : 
                     <Navigate to="/" replace />
                 } 
