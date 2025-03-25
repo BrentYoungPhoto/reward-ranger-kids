@@ -29,6 +29,9 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
     if (error && pin.length > 0) {
       setError("");
     }
+    
+    // Debug log to see PIN updates
+    console.log("Current PIN:", pin);
   }, [pin, error]);
 
   const handleVerify = () => {
@@ -82,7 +85,7 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
         </CardHeader>
         
         <CardContent className="space-y-6">
-          <div className="flex justify-center gap-2">
+          <div className="flex justify-center pb-4">
             <InputOTP
               key={resetKey}
               maxLength={requiredLength}
@@ -102,11 +105,6 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
           {error && (
             <p className="text-center text-red-500 text-sm font-medium">{error}</p>
           )}
-          
-          {/* Debug display for PIN state */}
-          <div className="text-xs text-gray-400 text-center">
-            PIN: {pin || "(empty)"}
-          </div>
         </CardContent>
         
         <CardFooter>

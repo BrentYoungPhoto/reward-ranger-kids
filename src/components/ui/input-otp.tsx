@@ -40,23 +40,25 @@ const InputOTPSlot = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "relative flex h-12 w-12 items-center justify-center border border-input text-sm transition-all rounded-md",
+        "relative flex h-14 w-14 items-center justify-center border-2 border-input bg-white text-sm transition-all rounded-md overflow-visible",
         slot?.isActive && "z-10 ring-2 ring-ring ring-offset-background",
         className
       )}
       {...props}
     >
-      {slot?.char && (
-        <span className="text-black font-bold text-xl">{slot.char}</span>
-      )}
-      
-      {!slot?.char && !slot?.hasFakeCaret && (
-        <span className="text-gray-400">•</span>
+      {slot?.char ? (
+        <span className="absolute inset-0 flex items-center justify-center text-black font-bold text-2xl z-20">
+          {slot.char}
+        </span>
+      ) : (
+        <span className="absolute inset-0 flex items-center justify-center text-gray-400 z-10">
+          {!slot?.hasFakeCaret && "•"}
+        </span>
       )}
       
       {slot?.hasFakeCaret && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center z-30">
+          <div className="h-6 w-1 animate-caret-blink bg-black duration-1000" />
         </div>
       )}
     </div>

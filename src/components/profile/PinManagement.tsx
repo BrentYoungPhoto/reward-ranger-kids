@@ -121,9 +121,6 @@ const PinManagement: React.FC<PinManagementProps> = ({
                 )}
               />
             </div>
-            <div className="text-xs text-gray-400 text-center">
-              Current PIN: {pins[parent.id] || "(empty)"}
-            </div>
           </div>
           
           <div className="border-t pt-4">
@@ -159,9 +156,6 @@ const PinManagement: React.FC<PinManagementProps> = ({
                         </InputOTPGroup>
                       )}
                     />
-                  </div>
-                  <div className="text-xs text-gray-400 text-center">
-                    Current PIN: {pins[child.id] || "(empty)"}
                   </div>
                 </div>
               ))}
