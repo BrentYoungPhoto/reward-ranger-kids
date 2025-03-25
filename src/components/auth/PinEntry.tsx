@@ -32,6 +32,7 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
 
   useEffect(() => {
     console.log("Current PIN value:", pin); // Debug log
+    console.log("PIN length:", pin.length); // Check length
   }, [pin]);
 
   const handleVerify = () => {
@@ -106,6 +107,11 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
           {error && (
             <p className="text-center text-red-500 text-sm font-medium">{error}</p>
           )}
+          
+          {/* Debug display to ensure PIN is captured */}
+          <div className="text-xs text-gray-500 text-center">
+            Current PIN state: {pin.length > 0 ? pin : "(empty)"}
+          </div>
         </CardContent>
         
         <CardFooter>
