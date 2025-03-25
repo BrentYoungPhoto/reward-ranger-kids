@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   InputOTP, 
@@ -32,10 +32,13 @@ const PinManagement: React.FC<PinManagementProps> = ({
   });
 
   const handlePinChange = (userId: string, pin: string) => {
-    setPins(prev => ({
-      ...prev,
-      [userId]: pin
-    }));
+    // Ensure only numbers are entered
+    if (/^\d*$/.test(pin) && pin.length <= 4) {
+      setPins(prev => ({
+        ...prev,
+        [userId]: pin
+      }));
+    }
   };
 
   const handleSavePin = (userId: string) => {
@@ -97,7 +100,7 @@ const PinManagement: React.FC<PinManagementProps> = ({
                 render={({ slots }) => (
                   <InputOTPGroup>
                     {slots.map((slot, index) => (
-                      <InputOTPSlot key={index} {...slot} />
+                      <InputOTPSlot key={index} index={index} />
                     ))}
                   </InputOTPGroup>
                 )}
@@ -131,7 +134,7 @@ const PinManagement: React.FC<PinManagementProps> = ({
                       render={({ slots }) => (
                         <InputOTPGroup>
                           {slots.map((slot, index) => (
-                            <InputOTPSlot key={index} {...slot} />
+                            <InputOTPSlot key={index} index={index} />
                           ))}
                         </InputOTPGroup>
                       )}

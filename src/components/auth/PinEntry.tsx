@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   InputOTP, 
   InputOTPGroup, 
@@ -23,6 +23,13 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
   const [error, setError] = useState("");
   const requiredLength = 4;
 
+  // Clear any errors when the pin changes
+  useEffect(() => {
+    if (error && pin.length > 0) {
+      setError("");
+    }
+  }, [pin, error]);
+
   const handleVerify = () => {
     // In a real app, you would verify with the backend
     // For our demo, we'll compare with the user's pin in dummyData
@@ -32,6 +39,13 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
     } else {
       setError("Incorrect PIN. Please try again.");
       setPin("");
+    }
+  };
+
+  const handlePinChange = (value: string) => {
+    // Ensure only numbers are entered
+    if (/^\d*$/.test(value) && value.length <= requiredLength) {
+      setPin(value);
     }
   };
 
@@ -72,11 +86,11 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
             <InputOTP
               maxLength={requiredLength}
               value={pin}
-              onChange={setPin}
+              onChange={handlePinChange}
               render={({ slots }) => (
                 <InputOTPGroup>
                   {slots.map((slot, index) => (
-                    <InputOTPSlot key={index} {...slot} />
+                    <InputOTPSlot key={index} index={index} />
                   ))}
                 </InputOTPGroup>
               )}
