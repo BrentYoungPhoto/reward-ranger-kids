@@ -35,6 +35,14 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
     }
   };
 
+  const handlePinChange = (value: string) => {
+    setPin(value);
+    // Clear error when user starts typing again
+    if (error) {
+      setError("");
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -72,11 +80,17 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
             <InputOTP
               maxLength={requiredLength}
               value={pin}
-              onChange={setPin}
+              onChange={handlePinChange}
+              className="gap-2"
               render={({ slots }) => (
-                <InputOTPGroup>
+                <InputOTPGroup className="gap-2">
                   {slots.map((slot, index) => (
-                    <InputOTPSlot key={index} {...slot} index={index} />
+                    <InputOTPSlot 
+                      key={index} 
+                      {...slot} 
+                      index={index} 
+                      className="border-2 border-gray-300 focus:border-app-blue bg-white"
+                    />
                   ))}
                 </InputOTPGroup>
               )}
