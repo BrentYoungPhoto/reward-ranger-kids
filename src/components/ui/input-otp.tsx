@@ -5,13 +5,6 @@ import { Dot } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-// Define the slot interface to match what input-otp provides
-interface OTPSlot {
-  char?: string;
-  hasFakeCaret?: boolean;
-  isActive?: boolean;
-}
-
 const InputOTP = React.forwardRef<
   React.ElementRef<typeof OTPInput>,
   React.ComponentPropsWithoutRef<typeof OTPInput>
@@ -41,21 +34,28 @@ const InputOTPSlot = React.forwardRef<
   React.ComponentPropsWithoutRef<"div"> & { index: number }
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext)
-  const slot = inputOTPContext?.slots?.[index] as OTPSlot || {}
+  const slot = inputOTPContext?.slots?.[index]
+  const char = slot?.char
+  const isActive = slot?.isActive
+  const hasFakeCaret = slot?.hasFakeCaret
   
   return (
     <div
       ref={ref}
       className={cn(
         "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
-        "bg-white text-black", // Added explicit background and text color
-        slot.isActive && "z-10 ring-2 ring-ring ring-offset-background",
+        "bg-white shadow-sm", // Light shadow for better visibility
+        isActive && "z-10 ring-2 ring-ring ring-offset-background",
         className
       )}
       {...props}
     >
-      {slot.char && <span className="text-black font-bold text-lg">{slot.char}</span>}
-      {slot.hasFakeCaret && (
+      {char && (
+        <span className="text-black font-bold text-xl">
+          {char}
+        </span>
+      )}
+      {hasFakeCaret && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="h-4 w-px animate-caret-blink bg-black duration-1000" />
         </div>
