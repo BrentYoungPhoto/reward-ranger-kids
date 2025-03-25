@@ -34,30 +34,19 @@ const InputOTPSlot = React.forwardRef<
   React.ComponentPropsWithoutRef<"div"> & { index: number }
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext)
-  const [debugMessage, setDebugMessage] = React.useState("");
-  
-  React.useEffect(() => {
-    if (inputOTPContext && inputOTPContext.slots && inputOTPContext.slots[index]) {
-      setDebugMessage(`Slot ${index}: ${inputOTPContext.slots[index].char || "empty"}`);
-      console.log(`Slot ${index}:`, inputOTPContext.slots[index].char || "empty");
-    } else {
-      setDebugMessage(`Slot ${index}: context not ready`);
-    }
-  }, [inputOTPContext, index]);
-  
-  // Add a safety check to ensure slots exists and has the specific index
+
   if (!inputOTPContext || !inputOTPContext.slots || !inputOTPContext.slots[index]) {
-    // Render a fallback empty slot if the context is not ready
     return (
       <div
         ref={ref}
         className={cn(
           "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
+          "bg-white",
           className
         )}
         {...props}
       >
-        <span className="text-gray-400 text-xs">{debugMessage}</span>
+        <span className="text-gray-500">?</span>
       </div>
     )
   }
@@ -68,18 +57,17 @@ const InputOTPSlot = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "relative flex h-10 w-10 items-center justify-center border-y border-r border-input bg-white text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
+        "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
+        "bg-white",
         isActive && "z-10 ring-2 ring-ring ring-offset-background",
         className
       )}
       {...props}
     >
       {char ? (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-black font-bold text-xl">{char}</span>
-        </div>
+        <span className="text-black font-bold text-xl">{char}</span>
       ) : (
-        <span className="text-gray-400 text-xs absolute bottom-0 opacity-50">{index}</span>
+        <span className="text-gray-400">{index}</span>
       )}
       {hasFakeCaret && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">

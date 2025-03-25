@@ -30,15 +30,24 @@ const PinManagement: React.FC<PinManagementProps> = ({
       return acc;
     }, {} as Record<string, string>)
   });
+  
+  // Create reset keys for each PIN input
+  const [resetKeys, setResetKeys] = useState<Record<string, string>>({
+    [parent.id]: 'initial',
+    ...children.reduce((acc, child) => {
+      acc[child.id] = 'initial';
+      return acc;
+    }, {} as Record<string, string>)
+  });
 
   useEffect(() => {
-    console.log("Current PINs state:", pins); // Debug log
+    console.log("Current PINs state:", pins);
   }, [pins]);
 
   const handlePinChange = (userId: string, pin: string) => {
     // Ensure only numbers are entered
     if (/^\d*$/.test(pin) && pin.length <= 4) {
-      console.log(`Setting PIN for user ${userId} to:`, pin); // Debug log
+      console.log(`Setting PIN for user ${userId} to:`, pin);
       setPins(prev => ({
         ...prev,
         [userId]: pin
@@ -63,6 +72,12 @@ const PinManagement: React.FC<PinManagementProps> = ({
       if (updatedUser.id === parent.id) {
         onUpdateParent({ pin });
       }
+      
+      // Reset the input to show updated PIN
+      setResetKeys(prev => ({
+        ...prev,
+        [userId]: Date.now().toString()
+      }));
     } else {
       toast.error("Failed to update PIN");
     }
@@ -98,6 +113,7 @@ const PinManagement: React.FC<PinManagementProps> = ({
             </div>
             <div className="flex justify-center">
               <InputOTP
+                key={resetKeys[parent.id]}
                 id={`pin-${parent.id}`}
                 maxLength={4}
                 value={pins[parent.id]}
@@ -110,6 +126,9 @@ const PinManagement: React.FC<PinManagementProps> = ({
                   </InputOTPGroup>
                 )}
               />
+            </div>
+            <div className="text-xs text-gray-500 text-center">
+              Current PIN: {pins[parent.id] || "(empty)"}
             </div>
           </div>
           
@@ -132,6 +151,7 @@ const PinManagement: React.FC<PinManagementProps> = ({
                   </div>
                   <div className="flex justify-center">
                     <InputOTP
+                      key={resetKeys[child.id]}
                       id={`pin-${child.id}`}
                       maxLength={4}
                       value={pins[child.id]}
@@ -144,6 +164,9 @@ const PinManagement: React.FC<PinManagementProps> = ({
                         </InputOTPGroup>
                       )}
                     />
+                  </div>
+                  <div className="text-xs text-gray-500 text-center">
+                    Current PIN: {pins[child.id] || "(empty)"}
                   </div>
                 </div>
               ))}
