@@ -76,7 +76,7 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
               render={({ slots }) => (
                 <InputOTPGroup>
                   {slots.map((slot, index) => (
-                    <InputOTPSlot key={index} {...slot} />
+                    <InputOTPSlot key={index} {...slot} index={index} />
                   ))}
                 </InputOTPGroup>
               )}
