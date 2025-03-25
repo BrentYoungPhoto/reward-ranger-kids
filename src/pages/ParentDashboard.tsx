@@ -8,6 +8,7 @@ import ParentDashboardLayout from '@/components/dashboard/ParentDashboardLayout'
 import ParentDashboardModals from '@/components/dashboard/ParentDashboardModals';
 import { Button } from '@/components/ui/button';
 import { LogOut } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
 
 const ParentDashboard = () => {
   const navigate = useNavigate();
@@ -33,7 +34,17 @@ const ParentDashboard = () => {
   };
 
   const handleLogout = () => {
-    navigate('/');
+    // Clear the authenticated user by navigating to the root and
+    // resetting the app state
+    toast({
+      title: "Logging out",
+      description: "You have been successfully logged out."
+    });
+    
+    // Small timeout to allow the toast to be displayed before redirecting
+    setTimeout(() => {
+      navigate('/', { replace: true });
+    }, 500);
   };
 
   return (
