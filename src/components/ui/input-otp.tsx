@@ -42,8 +42,10 @@ const InputOTPSlot = React.forwardRef<
     isActive?: boolean;
   }
   
-  // Use the defined type for the slot
-  const slot = (inputOTPContext?.slots?.[index] || {}) as SlotType;
+  // Use the defined type for the slot and provide a safe fallback
+  const slot = inputOTPContext?.slots && index < inputOTPContext.slots.length
+    ? (inputOTPContext.slots[index] as SlotType)
+    : {} as SlotType;
   
   // Safely access properties with defaults
   const char = slot.char || '';
