@@ -30,9 +30,14 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
     }
   }, [pin, error]);
 
+  useEffect(() => {
+    console.log("Current PIN value:", pin); // Debug log
+  }, [pin]);
+
   const handleVerify = () => {
     // In a real app, you would verify with the backend
     // For our demo, we'll compare with the user's pin in dummyData
+    console.log("Verifying PIN:", pin, "against user PIN:", user.pin);
     if (pin === user.pin) {
       setError("");
       onPinVerified();
@@ -45,6 +50,7 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
   const handlePinChange = (value: string) => {
     // Ensure only numbers are entered
     if (/^\d*$/.test(value) && value.length <= requiredLength) {
+      console.log("Setting PIN to:", value); // Debug log
       setPin(value);
     }
   };

@@ -31,9 +31,14 @@ const PinManagement: React.FC<PinManagementProps> = ({
     }, {} as Record<string, string>)
   });
 
+  useEffect(() => {
+    console.log("Current PINs state:", pins); // Debug log
+  }, [pins]);
+
   const handlePinChange = (userId: string, pin: string) => {
     // Ensure only numbers are entered
     if (/^\d*$/.test(pin) && pin.length <= 4) {
+      console.log(`Setting PIN for user ${userId} to:`, pin); // Debug log
       setPins(prev => ({
         ...prev,
         [userId]: pin
