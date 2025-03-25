@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface PinEntryProps {
   user: User;
@@ -23,7 +24,7 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
   const [error, setError] = useState("");
   const requiredLength = 4;
 
-  // Log when component mounts
+  // Log when component mounts for debugging
   useEffect(() => {
     console.log("PinEntry component mounted");
   }, []);
@@ -35,10 +36,12 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
     
     if (pin === user.pin) {
       setError("");
+      toast.success("PIN verified successfully");
       onPinVerified();
     } else {
       setError("Incorrect PIN. Please try again.");
       setPin("");
+      toast.error("Incorrect PIN");
     }
   };
 
