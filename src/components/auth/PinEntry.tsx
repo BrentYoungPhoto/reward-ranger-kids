@@ -56,6 +56,9 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
     }
   };
 
+  // Force recreation of the OTP input when pin is cleared due to incorrect entry
+  const resetKey = error ? Date.now().toString() : "stable";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -91,6 +94,7 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
         <CardContent className="space-y-6">
           <div className="flex justify-center">
             <InputOTP
+              key={resetKey}
               maxLength={requiredLength}
               value={pin}
               onChange={handlePinChange}
