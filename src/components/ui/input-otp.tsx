@@ -5,6 +5,13 @@ import { Dot } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+// Add a type definition for the slot object
+interface OTPSlot {
+  char?: string;
+  hasFakeCaret?: boolean;
+  isActive?: boolean;
+}
+
 const InputOTP = React.forwardRef<
   React.ElementRef<typeof OTPInput>,
   React.ComponentPropsWithoutRef<typeof OTPInput>
@@ -35,9 +42,8 @@ const InputOTPSlot = React.forwardRef<
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext)
   
-  // Important: Convert these attributes to lowercase for DOM compatibility
-  // to avoid React DOM prop warnings
-  const slot = inputOTPContext?.slots?.[index] || {}
+  // Cast the slot to our defined type with optional properties
+  const slot = (inputOTPContext?.slots?.[index] || {}) as OTPSlot
   
   return (
     <div
