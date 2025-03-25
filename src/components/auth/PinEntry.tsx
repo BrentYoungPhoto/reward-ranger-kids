@@ -41,6 +41,9 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
     if (error) {
       setError("");
     }
+
+    // Add console log to debug
+    console.log("PIN changed:", value);
   };
 
   return (
