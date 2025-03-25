@@ -5,7 +5,7 @@ import { Dot } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-// Add a type definition for the slot object
+// Define the slot interface to match what input-otp provides
 interface OTPSlot {
   char?: string;
   hasFakeCaret?: boolean;
@@ -41,9 +41,7 @@ const InputOTPSlot = React.forwardRef<
   React.ComponentPropsWithoutRef<"div"> & { index: number }
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext)
-  
-  // Cast the slot to our defined type with optional properties
-  const slot = (inputOTPContext?.slots?.[index] || {}) as OTPSlot
+  const slot = inputOTPContext?.slots?.[index] as OTPSlot || {}
   
   return (
     <div
