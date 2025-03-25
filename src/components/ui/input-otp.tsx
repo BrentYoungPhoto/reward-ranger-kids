@@ -34,27 +34,26 @@ const InputOTPSlot = React.forwardRef<
   React.ComponentPropsWithoutRef<"div"> & { index: number }
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext)
-
   const slot = inputOTPContext?.slots?.[index]
-  
+
   return (
     <div
       ref={ref}
       className={cn(
-        "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
-        "bg-white",
+        "relative flex h-12 w-12 items-center justify-center border border-input text-sm transition-all rounded-md",
         slot?.isActive && "z-10 ring-2 ring-ring ring-offset-background",
         className
       )}
       {...props}
     >
-      {!inputOTPContext || !slot ? (
-        <span className="text-gray-500">?</span>
-      ) : slot.char ? (
+      {slot?.char && (
         <span className="text-black font-bold text-xl">{slot.char}</span>
-      ) : (
-        <span className="text-gray-400">{index}</span>
       )}
+      
+      {!slot?.char && !slot?.hasFakeCaret && (
+        <span className="text-gray-400">•</span>
+      )}
+      
       {slot?.hasFakeCaret && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />

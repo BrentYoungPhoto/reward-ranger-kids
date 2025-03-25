@@ -33,26 +33,19 @@ const PinManagement: React.FC<PinManagementProps> = ({
   
   // Create reset keys for each PIN input
   const [resetKeys, setResetKeys] = useState<Record<string, string>>({
-    [parent.id]: 'initial',
+    [parent.id]: Date.now().toString(),
     ...children.reduce((acc, child) => {
-      acc[child.id] = 'initial';
+      acc[child.id] = Date.now().toString();
       return acc;
     }, {} as Record<string, string>)
   });
 
-  useEffect(() => {
-    console.log("Current PINs state:", pins);
-  }, [pins]);
-
   const handlePinChange = (userId: string, pin: string) => {
-    // Ensure only numbers are entered
-    if (/^\d*$/.test(pin) && pin.length <= 4) {
-      console.log(`Setting PIN for user ${userId} to:`, pin);
-      setPins(prev => ({
-        ...prev,
-        [userId]: pin
-      }));
-    }
+    console.log(`Setting PIN for user ${userId} to:`, pin);
+    setPins(prev => ({
+      ...prev,
+      [userId]: pin
+    }));
   };
 
   const handleSavePin = (userId: string) => {
@@ -118,6 +111,7 @@ const PinManagement: React.FC<PinManagementProps> = ({
                 maxLength={4}
                 value={pins[parent.id]}
                 onChange={(value) => handlePinChange(parent.id, value)}
+                pattern="^[0-9]+$"
                 render={({ slots }) => (
                   <InputOTPGroup>
                     {slots.map((slot, index) => (
@@ -127,7 +121,7 @@ const PinManagement: React.FC<PinManagementProps> = ({
                 )}
               />
             </div>
-            <div className="text-xs text-gray-500 text-center">
+            <div className="text-xs text-gray-400 text-center">
               Current PIN: {pins[parent.id] || "(empty)"}
             </div>
           </div>
@@ -156,6 +150,7 @@ const PinManagement: React.FC<PinManagementProps> = ({
                       maxLength={4}
                       value={pins[child.id]}
                       onChange={(value) => handlePinChange(child.id, value)}
+                      pattern="^[0-9]+$"
                       render={({ slots }) => (
                         <InputOTPGroup>
                           {slots.map((slot, index) => (
@@ -165,7 +160,7 @@ const PinManagement: React.FC<PinManagementProps> = ({
                       )}
                     />
                   </div>
-                  <div className="text-xs text-gray-500 text-center">
+                  <div className="text-xs text-gray-400 text-center">
                     Current PIN: {pins[child.id] || "(empty)"}
                   </div>
                 </div>

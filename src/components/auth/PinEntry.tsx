@@ -21,7 +21,7 @@ interface PinEntryProps {
 const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
-  const [resetKey, setResetKey] = useState("initial");
+  const [resetKey, setResetKey] = useState(Date.now().toString());
   const requiredLength = 4;
 
   // Clear any errors when the pin changes
@@ -29,15 +29,9 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
     if (error && pin.length > 0) {
       setError("");
     }
-    
-    // Log PIN changes to help debug
-    console.log("Current PIN value:", pin);
-    console.log("PIN length:", pin.length);
   }, [pin, error]);
 
   const handleVerify = () => {
-    // In a real app, you would verify with the backend
-    // For our demo, we'll compare with the user's pin in dummyData
     console.log("Verifying PIN:", pin, "against user PIN:", user.pin);
     if (pin === user.pin) {
       setError("");
@@ -51,11 +45,8 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
   };
 
   const handlePinChange = (value: string) => {
-    // Ensure only numbers are entered
-    if (/^\d*$/.test(value) && value.length <= requiredLength) {
-      console.log("Setting PIN to:", value);
-      setPin(value);
-    }
+    console.log("New PIN value:", value);
+    setPin(value);
   };
 
   return (
@@ -97,6 +88,7 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
               maxLength={requiredLength}
               value={pin}
               onChange={handlePinChange}
+              pattern="^[0-9]+$"
               render={({ slots }) => (
                 <InputOTPGroup>
                   {slots.map((slot, index) => (
@@ -112,8 +104,8 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
           )}
           
           {/* Debug display for PIN state */}
-          <div className="text-xs text-gray-500 text-center">
-            Current PIN state: {pin || "(empty)"}
+          <div className="text-xs text-gray-400 text-center">
+            PIN: {pin || "(empty)"}
           </div>
         </CardContent>
         
