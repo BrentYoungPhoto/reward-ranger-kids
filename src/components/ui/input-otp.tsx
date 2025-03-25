@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { OTPInput, OTPInputContext } from "input-otp"
 import { Dot } from "lucide-react"
@@ -34,46 +33,22 @@ const InputOTPSlot = React.forwardRef<
   React.ComponentPropsWithoutRef<"div"> & { index: number }
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext)
-  const slot = inputOTPContext?.slots?.[index]
-
-  // Log when character is entered for debugging
-  React.useEffect(() => {
-    if (slot?.char) {
-      console.log(`Slot ${index} has character: ${slot.char}`);
-    }
-  }, [slot?.char, index]);
+  const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]
 
   return (
     <div
       ref={ref}
       className={cn(
         "relative flex h-10 w-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
-        "bg-white shadow-md", // Enhanced shadow for better visibility
-        slot?.isActive && "z-10 ring-2 ring-ring ring-offset-background",
+        isActive && "z-10 ring-2 ring-ring ring-offset-background",
         className
       )}
       {...props}
     >
-      {/* Character Display Container */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        {slot?.char ? (
-          <div className="text-center w-full">
-            <span 
-              className="text-black font-bold text-2xl" 
-              style={{ color: "#000000", userSelect: "none" }}
-            >
-              {slot.char}
-            </span>
-          </div>
-        ) : (
-          <span className="text-gray-400 font-bold text-xl">•</span>
-        )}
-      </div>
-      
-      {/* Caret Animation */}
-      {slot?.hasFakeCaret && (
+      {char}
+      {hasFakeCaret && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-4 w-px animate-caret-blink bg-black duration-1000" />
+          <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
         </div>
       )}
     </div>

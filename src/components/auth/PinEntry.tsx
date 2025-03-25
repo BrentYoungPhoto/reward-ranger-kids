@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   InputOTP, 
   InputOTPGroup, 
@@ -11,7 +11,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import { toast } from 'sonner';
 
 interface PinEntryProps {
   user: User;
@@ -24,34 +23,15 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
   const [error, setError] = useState("");
   const requiredLength = 4;
 
-  // Log when component mounts for debugging
-  useEffect(() => {
-    console.log("PinEntry component mounted");
-  }, []);
-
   const handleVerify = () => {
     // In a real app, you would verify with the backend
     // For our demo, we'll compare with the user's pin in dummyData
-    console.log("Verifying PIN:", pin, "against user PIN:", user.pin);
-    
     if (pin === user.pin) {
       setError("");
-      toast.success("PIN verified successfully");
       onPinVerified();
     } else {
       setError("Incorrect PIN. Please try again.");
       setPin("");
-      toast.error("Incorrect PIN");
-    }
-  };
-
-  const handlePinChange = (value: string) => {
-    console.log("PIN input changed to:", value);
-    setPin(value);
-    
-    // Clear error when user starts typing again
-    if (error) {
-      setError("");
     }
   };
 
@@ -92,17 +72,11 @@ const PinEntry: React.FC<PinEntryProps> = ({ user, onPinVerified, onBack }) => {
             <InputOTP
               maxLength={requiredLength}
               value={pin}
-              onChange={handlePinChange}
-              className="gap-2"
+              onChange={setPin}
               render={({ slots }) => (
-                <InputOTPGroup className="gap-2">
+                <InputOTPGroup>
                   {slots.map((slot, index) => (
-                    <InputOTPSlot 
-                      key={index} 
-                      {...slot} 
-                      index={index} 
-                      className="border-2 border-gray-300 focus:border-app-blue"
-                    />
+                    <InputOTPSlot key={index} {...slot} />
                   ))}
                 </InputOTPGroup>
               )}
